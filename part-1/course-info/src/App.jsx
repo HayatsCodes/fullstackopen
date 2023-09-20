@@ -1,3 +1,12 @@
+/* eslint-disable react/prop-types */
+const Header = (props) => {
+  return (
+    <>
+      <h1> {props.course} </h1>
+    </>
+  );
+};
+
 const App = () => {
   const course = "Half Stack application development";
   const part1 = "Fundamentals of React";
@@ -9,7 +18,8 @@ const App = () => {
 
   return (
     <div>
-      <h1> {course} </h1>
+      {/* <h1> {course} </h1> */}
+      <Header course={course}></Header>
       <p>
         {part1} {exercises1}
       </p>
@@ -21,7 +31,7 @@ const App = () => {
       </p>
       <p>Number of exercises {exercises1 + exercises2 + exercises3}</p>
     </div>
-  )
+  );
 };
 
 export default App;
