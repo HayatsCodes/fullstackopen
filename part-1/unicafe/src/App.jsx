@@ -11,7 +11,7 @@ const Button = ({ handleClick, text }) => {
   return <button onClick={handleClick}>{text}</button>;
 };
 
-const Paragraph = ({ text, counter }) => (
+const StatisticLine = ({ text, counter }) => (
   <p>
     {text} {counter}
   </p>
@@ -29,12 +29,12 @@ const Statistics = ({good, neutral, bad, all, average, positive}) => {
   return (
     <div>
       <Header text="statistics" />
-      <Paragraph text="good" counter={good} />
-      <Paragraph text="neutral" counter={neutral} />
-      <Paragraph text="bad" counter={bad} />
-      <Paragraph text="all" counter={all} />
-      <Paragraph text="average" counter={average} />
-      <Paragraph text="positive" counter={positive} />
+      <StatisticLine text="good" counter={good} />
+      <StatisticLine text="neutral" counter={neutral} />
+      <StatisticLine text="bad" counter={bad} />
+      <StatisticLine text="all" counter={all} />
+      <StatisticLine text="average" counter={average} />
+      <StatisticLine text="positive" counter={positive} />
     </div>
   )
 }
