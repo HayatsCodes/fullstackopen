@@ -12,32 +12,37 @@ const Button = ({ handleClick, text }) => {
 };
 
 const StatisticLine = ({ text, counter }) => (
-  <p>
-    {text} {counter}
-  </p>
+  <tbody>
+    <tr>
+      <td>{text}</td>
+      <td>{counter}</td>
+    </tr>
+  </tbody>
 );
 
-const Statistics = ({good, neutral, bad, all, average, positive}) => {
+const Statistics = ({ good, neutral, bad, all, average, positive }) => {
   if (all === 0) {
     return (
       <div>
-      <Header text="statistics" />
-      <p>No feedback given</p>
+        <Header text="statistics" />
+        <p>No feedback given</p>
       </div>
-      )
+    );
   }
   return (
     <div>
       <Header text="statistics" />
-      <StatisticLine text="good" counter={good} />
-      <StatisticLine text="neutral" counter={neutral} />
-      <StatisticLine text="bad" counter={bad} />
-      <StatisticLine text="all" counter={all} />
-      <StatisticLine text="average" counter={average} />
-      <StatisticLine text="positive" counter={positive} />
+      <table>
+        <StatisticLine text="good" counter={good} />
+        <StatisticLine text="neutral" counter={neutral} />
+        <StatisticLine text="bad" counter={bad} />
+        <StatisticLine text="all" counter={all} />
+        <StatisticLine text="average" counter={average} />
+        <StatisticLine text="positive" counter={positive} />
+      </table>
     </div>
-  )
-}
+  );
+};
 
 const App = () => {
   const [good, setGood] = useState(0);
@@ -48,42 +53,39 @@ const App = () => {
   const [positive, setPositive] = useState("0%");
 
   const handleGoodClick = () => {
-    const updatedAll = all + 1
-    const updatedGood = good + 1
-    const updatedAverage = ((updatedGood * 1) + (bad * -1)) / updatedAll
-    const updatedPositive = (updatedGood / updatedAll) * 100
+    const updatedAll = all + 1;
+    const updatedGood = good + 1;
+    const updatedAverage = (updatedGood * 1 + bad * -1) / updatedAll;
+    const updatedPositive = (updatedGood / updatedAll) * 100;
 
-
-    setGood(updatedGood)
-    setAll(updatedAll)
-    setAverage(updatedAverage)
-    setPositive(`${updatedPositive}%`)
+    setGood(updatedGood);
+    setAll(updatedAll);
+    setAverage(updatedAverage);
+    setPositive(`${updatedPositive}%`);
   };
-  
+
   const handleNeutralClick = () => {
-    const updatedAll = all + 1
-    const updatedNeutral = neutral + 1
-    const updatedAverage = ((good * 1) + (bad * -1)) / updatedAll
-    const updatedPositive = (good / updatedAll) * 100
+    const updatedAll = all + 1;
+    const updatedNeutral = neutral + 1;
+    const updatedAverage = (good * 1 + bad * -1) / updatedAll;
+    const updatedPositive = (good / updatedAll) * 100;
 
     setNeutral(updatedNeutral);
-    setAll(updatedAll)
-    setAverage(updatedAverage)
-    setPositive(`${updatedPositive}%`)
-
+    setAll(updatedAll);
+    setAverage(updatedAverage);
+    setPositive(`${updatedPositive}%`);
   };
 
   const handleBadClick = () => {
-    const updatedAll = all + 1
-    const updatedBad = bad + 1
-    const updatedAverage = ((good * 1) + (updatedBad * -1)) / updatedAll
-    const updatedPositive = (good / updatedAll) * 100
+    const updatedAll = all + 1;
+    const updatedBad = bad + 1;
+    const updatedAverage = (good * 1 + updatedBad * -1) / updatedAll;
+    const updatedPositive = (good / updatedAll) * 100;
 
     setBad(updatedBad);
-    setAll(updatedAll)
-    setAverage(updatedAverage)
-    setPositive(`${updatedPositive}%`)
-
+    setAll(updatedAll);
+    setAverage(updatedAverage);
+    setPositive(`${updatedPositive}%`);
   };
 
   return (
@@ -92,8 +94,13 @@ const App = () => {
       <Button handleClick={handleGoodClick} text="good" />
       <Button handleClick={handleNeutralClick} text="neutral" />
       <Button handleClick={handleBadClick} text="bad" />
-      <Statistics 
-      good={good} neutral={neutral} bad={bad} all={all} average={average} positive={positive}
+      <Statistics
+        good={good}
+        neutral={neutral}
+        bad={bad}
+        all={all}
+        average={average}
+        positive={positive}
       />
     </div>
   );
