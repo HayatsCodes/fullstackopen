@@ -18,6 +18,14 @@ const Paragraph = ({ text, counter }) => (
 );
 
 const Statistics = ({good, neutral, bad, all, average, positive}) => {
+  if (all === 0) {
+    return (
+      <div>
+      <Header text="statistics" />
+      <p>No feedback given</p>
+      </div>
+      )
+  }
   return (
     <div>
       <Header text="statistics" />
