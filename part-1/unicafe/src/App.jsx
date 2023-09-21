@@ -17,17 +17,19 @@ const Paragraph = ({ text, counter }) => (
   </p>
 );
 
-// const Display = ({counter1, counter2, counter3}) => {
-//   return (
-//     <>
-//      <Header text='statistics'/>
-//     <p>good {counter1}</p>
-//     <p>neutral {counter2}</p>
-//     <p>bad {counter3}</p>
-//     </>
-
-//   )
-// }
+const Statistics = ({good, neutral, bad, all, average, positive}) => {
+  return (
+    <div>
+      <Header text="statistics" />
+      <Paragraph text="good" counter={good} />
+      <Paragraph text="neutral" counter={neutral} />
+      <Paragraph text="bad" counter={bad} />
+      <Paragraph text="all" counter={all} />
+      <Paragraph text="average" counter={average} />
+      <Paragraph text="positive" counter={positive} />
+    </div>
+  )
+}
 
 const App = () => {
   const [good, setGood] = useState(0);
@@ -73,7 +75,7 @@ const App = () => {
     setAll(updatedAll)
     setAverage(updatedAverage)
     setPositive(`${updatedPositive}%`)
-    
+
   };
 
   return (
@@ -82,14 +84,9 @@ const App = () => {
       <Button handleClick={handleGoodClick} text="good" />
       <Button handleClick={handleNeutralClick} text="neutral" />
       <Button handleClick={handleBadClick} text="bad" />
-      {/* <Display counter1={good} counter2={neutral} counter3={bad} /> */}
-      <Header text="statistics" />
-      <Paragraph text="good" counter={good} />
-      <Paragraph text="neutral" counter={neutral} />
-      <Paragraph text="bad" counter={bad} />
-      <Paragraph text="all" counter={all} />
-      <Paragraph text="average" counter={average} />
-      <Paragraph text="positive" counter={positive} />
+      <Statistics 
+      good={good} neutral={neutral} bad={bad} all={all} average={average} positive={positive}
+      />
     </div>
   );
 };
