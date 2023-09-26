@@ -3,18 +3,19 @@ const Course = ({ course }) => {
   return (
     <div>
       <Header course={course.name} />
-      {
-        <Content
-          parts={course.parts}
-        />
-      }
+      {<Content parts={course.parts} />}
+      <Total
+        sum={course.parts.reduce((sum, part) => {
+          return sum + part.exercises;
+        }, 0)}
+      />
     </div>
   );
 };
 
 const Header = ({ course }) => <h1>{course}</h1>;
 
-// const Total = ({ sum }) => <p>Number of exercises {sum}</p>
+const Total = ({ sum }) => <p>Number of exercises {sum}</p>;
 
 const Part = ({ part }) => (
   <p>
