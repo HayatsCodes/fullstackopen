@@ -1,43 +1,8 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
-
-const Filter = ({ filter, handleFilter }) => (
-  <div>
-    filter: <input value={filter} onChange={handleFilter} />
-  </div>
-);
-
-const PersonForm = ({
-  addPerson,
-  newName,
-  number,
-  handleNameChange,
-  handleNumberChange,
-}) => {
-  return (
-    <form onSubmit={addPerson}>
-      <div>
-        name: <input value={newName} onChange={handleNameChange} />
-      </div>
-      <div>
-        number: <input value={number} onChange={handleNumberChange} />
-      </div>
-      <div>
-        <button type="submit">add</button>
-      </div>
-    </form>
-  );
-};
-
-const Persons = ({ persons }) => (
-  <div>
-    {persons.map((person) => (
-      <p key={person.name}>
-        {person.name} {person.number}
-      </p>
-    ))}
-  </div>
-);
+import Filter from "./components/Filter";
+import PersonForm from "./components/PersonForm";
+import Persons from "./components/Persons";
 
 const App = () => {
   const [persons, setPersons] = useState([
