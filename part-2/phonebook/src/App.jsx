@@ -1,6 +1,12 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
 
+const Filter = ({ filter, handleFilter }) => (
+  <div>
+    filter: <input value={filter} onChange={handleFilter} />
+  </div>
+);
+
 const App = () => {
   const [persons, setPersons] = useState([
     { name: "Arto Hellas", number: "040-123456", id: 1 },
@@ -11,8 +17,8 @@ const App = () => {
 
   const [newName, setNewName] = useState("");
   const [number, setNumber] = useState("");
-  const [filter, setFilter] = useState('')
-  const [showFilter, setShowFilter] = useState(false)
+  const [filter, setFilter] = useState("");
+  const [showFilter, setShowFilter] = useState(false);
 
   const addPerson = (event) => {
     event.preventDefault();
@@ -42,29 +48,25 @@ const App = () => {
     setNumber(event.target.value);
   };
 
+  const regex = new RegExp(`${filter}`, "i");
+  const filteredPersons = persons.filter((person) => regex.test(person.name));
 
-  const regex = new RegExp(`${filter}`, 'i')
-  const filteredPersons = persons.filter(person => regex.test(person.name))
-
-  const personToShow = showFilter ? filteredPersons : persons
+  const personToShow = showFilter ? filteredPersons : persons;
 
   const handleFilter = (event) => {
-    const value = event.target.value
-    setFilter(value)
-    if(!value) {
-      setShowFilter(false)
+    const value = event.target.value;
+    setFilter(value);
+    if (!value) {
+      setShowFilter(false);
     } else {
-      setShowFilter(true)
+      setShowFilter(true);
     }
-    
-  }
+  };
 
   return (
     <div>
       <h2>Phonebook</h2>
-      <div>
-        filter: <input value={filter} onChange={handleFilter}/>
-      </div>
+      <Filter filter={filter} handleFilter={handleFilter}/>
       <h2>add a new</h2>
       <form onSubmit={addPerson}>
         <div>
