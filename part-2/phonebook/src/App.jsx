@@ -7,21 +7,37 @@ const Filter = ({ filter, handleFilter }) => (
   </div>
 );
 
-const PersonForm = ({addPerson, newName, number, handleNameChange, handleNumberChange}) => {
+const PersonForm = ({
+  addPerson,
+  newName,
+  number,
+  handleNameChange,
+  handleNumberChange,
+}) => {
   return (
     <form onSubmit={addPerson}>
-    <div>
-      name: <input value={newName} onChange={handleNameChange} />
-    </div>
-    <div>
-      number: <input value={number} onChange={handleNumberChange} />
-    </div>
-    <div>
-      <button type="submit">add</button>
-    </div>
-  </form>
-  )
-}
+      <div>
+        name: <input value={newName} onChange={handleNameChange} />
+      </div>
+      <div>
+        number: <input value={number} onChange={handleNumberChange} />
+      </div>
+      <div>
+        <button type="submit">add</button>
+      </div>
+    </form>
+  );
+};
+
+const Persons = ({ persons }) => (
+  <div>
+    {persons.map((person) => (
+      <p key={person.name}>
+        {person.name} {person.number}
+      </p>
+    ))}
+  </div>
+);
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -82,20 +98,17 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Filter filter={filter} handleFilter={handleFilter}/>
-      <h2>add a new</h2>
-      <PersonForm 
-      addPerson={addPerson} newName={newName} number={number} handleNameChange={handleNameChange} handleNumberChange={handleNumberChange}
+      <Filter filter={filter} handleFilter={handleFilter} />
+      <h3>add a new</h3>
+      <PersonForm
+        addPerson={addPerson}
+        newName={newName}
+        number={number}
+        handleNameChange={handleNameChange}
+        handleNumberChange={handleNumberChange}
       />
-      <h2>Numbers</h2>
-      <div>
-        {personToShow.map((person) => (
-          <p key={person.name}>
-            {person.name} {person.number}
-          </p>
-        ))}
-        <div>debug: {filter}</div>
-      </div>
+      <h3>Numbers</h3>
+      <Persons persons={personToShow}/>
     </div>
   );
 };
