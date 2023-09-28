@@ -1,10 +1,10 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
-import axios from 'axios'
 
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
+import personService from "./services/person";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -14,12 +14,10 @@ const App = () => {
   const [showFilter, setShowFilter] = useState(false);
 
   useEffect(() => {
-    axios
-    .get('http://localhost:3001/persons')
-    .then(response => {
-      setPersons(response.data)
-    })
-  }, [])
+    personService.getAll().then((data) => {
+      setPersons(data);
+    });
+  }, []);
 
   const addPerson = (event) => {
     event.preventDefault();
@@ -36,13 +34,11 @@ const App = () => {
       number,
     };
 
-    axios
-      .post('http://localhost:3001/persons', personObject)
-      .then((response) => {
-        setPersons(persons.concat(response.data));
-        setName("");
-        setNumber("");
-      })
+    personService.create(personObject).then((returnedPerson) => {
+      setPersons(persons.concat(returnedPerson));
+      setName("");
+      setNumber("");
+    });
   };
 
   const handleNameChange = (event) => {
@@ -81,7 +77,7 @@ const App = () => {
         handleNumberChange={handleNumberChange}
       />
       <h3>Numbers</h3>
-      <Persons persons={personToShow}/>
+      <Persons persons={personToShow} />
     </div>
   );
 };

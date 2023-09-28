@@ -24,6 +24,11 @@
       "name": "Hayatu",
       "number": "12345",
       "id": 5
+    },
+    {
+      "name": "new person",
+      "number": "45678",
+      "id": 6
     }
   ]
 }
