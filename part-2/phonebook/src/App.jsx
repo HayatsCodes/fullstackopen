@@ -8,7 +8,7 @@ import Persons from "./components/Persons";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
-  const [newName, setNewName] = useState("");
+  const [name, setName] = useState("");
   const [number, setNumber] = useState("");
   const [filter, setFilter] = useState("");
   const [showFilter, setShowFilter] = useState(false);
@@ -24,25 +24,29 @@ const App = () => {
   const addPerson = (event) => {
     event.preventDefault();
 
-    const newPerson = persons.find((person) => person.name === newName.trim());
+    const newPerson = persons.find((person) => person.name === name.trim());
 
     if (newPerson) {
-      alert(`${newName} is already added to phonebook`);
+      alert(`${name} is already added to phonebook`);
       return;
     }
 
     const personObject = {
-      name: newName,
-      number: number,
+      name,
+      number,
     };
 
-    setPersons(persons.concat(personObject));
-    setNewName("");
-    setNumber("");
+    axios
+      .post('http://localhost:3001/persons', personObject)
+      .then((response) => {
+        setPersons(persons.concat(response.data));
+        setName("");
+        setNumber("");
+      })
   };
 
   const handleNameChange = (event) => {
-    setNewName(event.target.value);
+    setName(event.target.value);
   };
 
   const handleNumberChange = (event) => {
@@ -71,7 +75,7 @@ const App = () => {
       <h3>add a new</h3>
       <PersonForm
         addPerson={addPerson}
-        newName={newName}
+        name={name}
         number={number}
         handleNameChange={handleNameChange}
         handleNumberChange={handleNumberChange}
