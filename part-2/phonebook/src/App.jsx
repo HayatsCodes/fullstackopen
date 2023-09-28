@@ -25,17 +25,29 @@ const App = () => {
   const addPerson = (event) => {
     event.preventDefault();
 
-    const newPerson = persons.find((person) => person.name === name.trim());
-
-    if (newPerson) {
-      alert(`${name} is already added to phonebook`);
-      return;
-    }
+    const isFound = persons.find((person) => person.name === name.trim());
 
     const personObject = {
       name,
       number,
     };
+
+    if (isFound) {
+      if(isFound.number !== number) {
+        if (window.confirm(`${name} is already added to phonebook, replace the old number with a new one?`)) {
+          axios
+            .patch(`http://localhost:3001/persons/${isFound.id}`, personObject)
+            .then(response => 
+                setPersons(persons.map(person => person.id !== isFound.id ? person : response.data))
+              );
+          setName("");
+          setNumber("");
+        }
+      } else {
+        alert(`${name} is already added to phonebook`)
+      }
+      return;
+    }
 
     personService.create(personObject).then((returnedPerson) => {
       setPersons(persons.concat(returnedPerson));
@@ -49,7 +61,7 @@ const App = () => {
   };
 
   const handleNumberChange = (event) => {
-    setNumber(event.target.value);
+    setNumber(event.target.value.trim());
   };
 
   const regex = new RegExp(`${filter}`, "i");
@@ -69,8 +81,7 @@ const App = () => {
 
   const handleDelete = (name, id) => {
     if (window.confirm(`Delete ${name}?`)) {
-      axios
-      .delete(`http://localhost:3001/persons/${id}`)
+      personService.deleteEntry(id)
       setPersons(persons.filter(person => person.id !== id))
     }
   }

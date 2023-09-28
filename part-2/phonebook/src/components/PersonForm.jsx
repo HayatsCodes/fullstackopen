@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 const PersonForm = ({
     addPerson,
-    newName,
+    name,
     number,
     handleNameChange,
     handleNumberChange,
@@ -9,7 +9,7 @@ const PersonForm = ({
     return (
       <form onSubmit={addPerson}>
         <div>
-          name: <input value={newName} onChange={handleNameChange} />
+          name: <input value={name} onChange={handleNameChange} />
         </div>
         <div>
           number: <input value={number} onChange={handleNumberChange} />
