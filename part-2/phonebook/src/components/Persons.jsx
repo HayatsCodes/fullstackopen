@@ -1,12 +1,19 @@
 /* eslint-disable react/prop-types */
-const Persons = ({ persons }) => (
-    <div>
-      {persons.map((person) => (
-        <p key={person.id}>
+const DeleteButton = ({ handleDelete }) => (
+  <button onClick={handleDelete}>delete</button>
+);
+
+const Persons = ({ persons, handleDelete }) => (
+  <div>
+    {persons.map((person) => (
+      <div key={person.id}>
+        <p>
           {person.name} {person.number}
         </p>
-      ))}
-    </div>
-  );
+        <DeleteButton handleDelete={() => handleDelete(person.name, person.id)}/>
+      </div>
+    ))}
+  </div>
+);
 
-  export default Persons
+export default Persons;

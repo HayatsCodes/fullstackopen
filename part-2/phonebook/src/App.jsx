@@ -5,6 +5,9 @@ import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
 import personService from "./services/person";
+import axios from "axios";
+
+
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -64,6 +67,14 @@ const App = () => {
     }
   };
 
+  const handleDelete = (name, id) => {
+    if (window.confirm(`Delete ${name}?`)) {
+      axios
+      .delete(`http://localhost:3001/persons/${id}`)
+      setPersons(persons.filter(person => person.id !== id))
+    }
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -77,7 +88,7 @@ const App = () => {
         handleNumberChange={handleNumberChange}
       />
       <h3>Numbers</h3>
-      <Persons persons={personToShow} />
+      <Persons persons={personToShow} handleDelete={handleDelete} />
     </div>
   );
 };
