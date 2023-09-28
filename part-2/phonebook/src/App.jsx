@@ -5,8 +5,7 @@ import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
 import personService from "./services/person";
-import axios from "axios";
-
+import Notification from "./components/Notification";
 
 
 const App = () => {
@@ -15,6 +14,8 @@ const App = () => {
   const [number, setNumber] = useState("");
   const [filter, setFilter] = useState("");
   const [showFilter, setShowFilter] = useState(false);
+  const [status, setStatus] = useState('')
+  const [statusMessage, setStatusMessage] = useState(null)
 
   useEffect(() => {
     personService.getAll().then((data) => {
@@ -35,16 +36,29 @@ const App = () => {
     if (isFound) {
       if(isFound.number !== number) {
         if (window.confirm(`${name} is already added to phonebook, replace the old number with a new one?`)) {
-          axios
-            .patch(`http://localhost:3001/persons/${isFound.id}`, personObject)
-            .then(response => 
-                setPersons(persons.map(person => person.id !== isFound.id ? person : response.data))
-              );
+         personService.update(isFound.id, personObject)
+            .then(updatedPerson => 
+                setPersons(persons.map(person => person.id !== isFound.id ? person : updatedPerson))
+              )
+              .catch(() => {
+                setStatusMessage(`Information of ${name} has already been deleted`)
+                setStatus('error')
+              })
           setName("");
           setNumber("");
+          setStatusMessage(`Updated ${name} number sucessfully!`)
+          setStatus('success')
+          setTimeout(() => {
+            setStatusMessage(null)
+          }, 5000)
+          setPersons(persons.filter(p => p.id !== isFound.id))
         }
       } else {
-        alert(`${name} is already added to phonebook`)
+        setStatusMessage(`${name} is already added to phonebook`)
+        setStatus('error')
+        setTimeout(() => {
+          setStatusMessage(null)
+        }, 5000)
       }
       return;
     }
@@ -53,6 +67,11 @@ const App = () => {
       setPersons(persons.concat(returnedPerson));
       setName("");
       setNumber("");
+      setStatusMessage(`Added ${name} successfully!`)
+      setStatus('success')
+      setTimeout(() => {
+        setStatusMessage(null)
+      }, 5000)
     });
   };
 
@@ -89,6 +108,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={statusMessage} status={status}/>
       <Filter filter={filter} handleFilter={handleFilter} />
       <h3>add a new</h3>
       <PersonForm
