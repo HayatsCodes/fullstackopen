@@ -37,11 +37,30 @@ const App = () => {
       <div>
         {filteredCountries.length > 10 ? (
           <p>Too many matches, specify another filter</p>
-        ) : (
+        ) : filteredCountries.length !== 1 
+          ? (
           filteredCountries.map((country) => (
             <p key={country.name.common}>{country.name.common}</p>
           ))
-        )}
+        ) 
+        : (
+          <div>
+            <h1>{filteredCountries[0].name.official}</h1>
+            <p>Name: {filteredCountries[0].name.common}</p>
+            <p>Capital: {filteredCountries[0].capital[0]}</p>
+            <p>Area: {filteredCountries[0].area}</p>
+            <h2>Languages</h2>
+            <ul>
+              {
+              Object.values(filteredCountries[0].languages).map(language => (
+                 <li key={language}>{language}</li>
+              ))
+              }
+            </ul>
+            <img src={filteredCountries[0].flags.png} alt={filteredCountries[0].flags.alt} />
+          </div>
+        )
+      }
       </div>
     </div>
   );
