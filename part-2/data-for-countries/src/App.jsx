@@ -4,7 +4,6 @@ import axios from "axios";
 import CountryData from "./components/CountryData";
 
 const App = () => {
-
   const [countries, setCountries] = useState(null);
   const [showFilter, setShowFilter] = useState(false);
   const [filter, setFilter] = useState("");
@@ -12,8 +11,17 @@ const App = () => {
   const [showCountryData, setShowCountryData] = useState(false);
   const [latlng, setLatlng] = useState(null);
   const [weather, setWeather] = useState(null);
+  const [filteredCountries, setFilteredCountries] = useState([]); // Declare filteredCountries state
 
-  const API_KEY = import.meta.env.VITE_API_KEY
+  const API_KEY = import.meta.env.VITE_API_KEY;
+
+  useEffect(() => {
+    if (filteredCountries.length === 1) {
+      const renderedCountry = filteredCountries[0];
+      setLatlng({ lat: renderedCountry.latlng[0], lng: renderedCountry.latlng[1] });
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filteredCountries.length]);
 
   useEffect(() => {
     axios
@@ -32,15 +40,13 @@ const App = () => {
       .catch(error => {console.error(error)})
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [latlng])
-
+  }, [latlng]);
 
   const handleFilter = (event) => {
     setFilter(event.target.value);
 
-
     if (showCountryData) {
-      setShowCountryData(false)
+      setShowCountryData(false);
     }
     if (!event.target.value) {
       setShowFilter(false);
@@ -50,17 +56,22 @@ const App = () => {
   };
 
   const regex = new RegExp(`${filter}`, "i");
-  const filteredCountries = showFilter && countries
-    ? countries.filter((country) => regex.test(country.name.common))
-    : [];
-
+  
+  useEffect(() => {
+    const newFilteredCountries = showFilter && countries
+      ? countries.filter((country) => regex.test(country.name.common))
+      : [];
+    setFilteredCountries(newFilteredCountries); 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showFilter, countries, filter]);
 
   const handleShowCountryData = (countryName) => {
-    const newIndex = filteredCountries.findIndex(country => country.name.common === countryName)
-    setIndex(newIndex)
-    setLatlng({lat: filteredCountries[newIndex].latlng[0], lng: filteredCountries[newIndex].latlng[1]})
-    setShowCountryData(true)
-  }
+    const newIndex = filteredCountries.findIndex(country => country.name.common === countryName);
+    setIndex(newIndex);
+    setLatlng({ lat: filteredCountries[newIndex].latlng[0], lng: filteredCountries[newIndex].latlng[1] });
+    setShowCountryData(true);
+  };
+
 
   return (
     <div>
@@ -68,7 +79,7 @@ const App = () => {
         Find countries <input value={filter} onChange={handleFilter} />
       </div>
       {!showCountryData
-      ? (<div>log
+      ? (<div>
         {!countries ? <p>Loading...</p> : 
         filteredCountries.length > 10 
         ? (
@@ -84,11 +95,8 @@ const App = () => {
             ))
           ) 
           : (<>
-              {/* {setLat(filteredCountries[0].latlng[0])}
-              {setLng(filteredCountries[0].latlng[1])} */}
               <CountryData countries={filteredCountries} index={index} weather={weather}/>
             </>
-            
           )}
         </div>)
       : <CountryData countries={filteredCountries} index={index} weather={weather}/>

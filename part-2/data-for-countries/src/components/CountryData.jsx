@@ -1,11 +1,8 @@
 /* eslint-disable react/prop-types */
 const CountryData = ({ countries, index, weather }) => {
 
-   
-
     return (
         <div>
-            {console.log('Current weather: ', weather)}
               <h1>{countries[index].name.official}</h1>
               <p>Name: {countries[index].name.common}</p>
               <p>Capital: {countries[index].capital[index]}</p>
