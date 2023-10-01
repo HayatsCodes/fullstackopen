@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 import CountryData from "./components/CountryData";
+import SearchBar from "./components/SearchBar";
 
 const App = () => {
   const [countries, setCountries] = useState(null);
@@ -11,7 +12,8 @@ const App = () => {
   const [showCountryData, setShowCountryData] = useState(false);
   const [latlng, setLatlng] = useState(null);
   const [weather, setWeather] = useState(null);
-  const [filteredCountries, setFilteredCountries] = useState([]); // Declare filteredCountries state
+  const [filteredCountries, setFilteredCountries] = useState([]);
+  const [visibility, setVisibility] = useState("hidden");
 
   const API_KEY = import.meta.env.VITE_API_KEY;
 
@@ -49,8 +51,10 @@ const App = () => {
       setShowCountryData(false);
     }
     if (!event.target.value) {
+      setVisibility('hidden')
       setShowFilter(false);
     } else {
+      setVisibility('show')
       setShowFilter(true);
     }
   };
@@ -74,25 +78,26 @@ const App = () => {
 
 
   return (
-    <div>
-      <div>
-        Find countries <input value={filter} onChange={handleFilter} />
-      </div>
+    <>
+    <div className="container">
+      <SearchBar filter={filter} handleFilter={handleFilter}/>
       {!showCountryData
       ? (<div>
-        {!countries ? <p>Loading...</p> : 
+        {!countries ? <p className="hidden {}">Loading...</p> : 
         filteredCountries.length > 10 
         ? (
-          <p>Too many matches, specify another filter</p>
+          <p className="invalid-search">Too many matches, specify another filter</p>
         )
         : filteredCountries.length !== 1
           ? (
-            filteredCountries.map((country) => (
-              <div key={country.name.common}>
+            <div className={`search-results ${visibility}`}>
+            {filteredCountries.map((country) => (
+              <div key={country.name.common} className="search-result">
                 <p>{country.name.common}</p>
-                <button onClick={() => handleShowCountryData(country.name.common)}>Details</button>
+                <button className="btn" onClick={() => handleShowCountryData(country.name.common)}>View</button>
               </div>
-            ))
+            ))}
+          </div>
           ) 
           : (<>
               <CountryData countries={filteredCountries} index={index} weather={weather}/>
@@ -102,8 +107,9 @@ const App = () => {
       : <CountryData countries={filteredCountries} index={index} weather={weather}/>
 
       }
-      
     </div>
+    <footer>Built with Love <span>❤</span> by <a href="https://twitter.com/hayats_codes" target="_blank" rel="noreferrer">HayatsCodes</a></footer>
+    </>
   );
 };
 
