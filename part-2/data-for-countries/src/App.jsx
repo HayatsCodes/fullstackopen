@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-import CountryData from "./components/CountryData";
+// import CountryData from "./components/CountryData";
 import SearchBar from "./components/SearchBar";
+import View from "./components/View";
 
 const App = () => {
   const [countries, setCountries] = useState(null);
@@ -16,6 +17,10 @@ const App = () => {
   const [visibility, setVisibility] = useState("hidden");
 
   const API_KEY = import.meta.env.VITE_API_KEY;
+  // const regex = new RegExp(`${filter}`, "i");
+
+
+  // UseEffects
 
   useEffect(() => {
     if (filteredCountries.length === 1) {
@@ -30,7 +35,7 @@ const App = () => {
       .get("https://studies.cs.helsinki.fi/restcountries/api/all")
       .then((response) => setCountries(response.data))
       .catch((error) => {
-        console.log(error);
+        console.error(error);
       });
   }, []);
 
@@ -43,6 +48,21 @@ const App = () => {
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [latlng]);
+  
+  useEffect(() => {
+    if (showFilter && countries) {
+      const newFilteredCountries = isValidRegex(filter)
+        ? countries.filter((country) => (new RegExp(`${filter}`, "i")).test(country.name.common))
+        : [];
+      setFilteredCountries(newFilteredCountries); 
+    } else {
+      setFilteredCountries([]); // Set to an empty array if showFilter is false or countries is null
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showFilter, countries, filter]);
+  
+
+  // Functions/handlers
 
   const handleFilter = (event) => {
     setFilter(event.target.value);
@@ -59,15 +79,6 @@ const App = () => {
     }
   };
 
-  const regex = new RegExp(`${filter}`, "i");
-  
-  useEffect(() => {
-    const newFilteredCountries = showFilter && countries
-      ? countries.filter((country) => regex.test(country.name.common))
-      : [];
-    setFilteredCountries(newFilteredCountries); 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [showFilter, countries, filter]);
 
   const handleShowCountryData = (countryName) => {
     const newIndex = filteredCountries.findIndex(country => country.name.common === countryName);
@@ -76,37 +87,30 @@ const App = () => {
     setShowCountryData(true);
   };
 
+  const isValidRegex = (query) => {
+    try {
+      new RegExp(`${query}`, "i");
+      return true; // No syntax errors, so it's a valid regex
+    } catch (error) {
+      return false; // Syntax error, so it's not a valid regex
+    }
+  };
+
 
   return (
     <>
     <div className="container">
       <SearchBar filter={filter} handleFilter={handleFilter}/>
-      {!showCountryData
-      ? (<div>
-        {!countries ? <p className="hidden {}">Loading...</p> : 
-        filteredCountries.length > 10 
-        ? (
-          <p className="invalid-search">Too many matches, specify another filter</p>
-        )
-        : filteredCountries.length !== 1
-          ? (
-            <div className={`search-results ${visibility}`}>
-            {filteredCountries.map((country) => (
-              <div key={country.name.common} className="search-result">
-                <p>{country.name.common}</p>
-                <button className="btn" onClick={() => handleShowCountryData(country.name.common)}>View</button>
-              </div>
-            ))}
-          </div>
-          ) 
-          : (<>
-              <CountryData countries={filteredCountries} index={index} weather={weather}/>
-            </>
-          )}
-        </div>)
-      : <CountryData countries={filteredCountries} index={index} weather={weather}/>
-
-      }
+      <View 
+      viewCountry={showCountryData} 
+      countries={countries} 
+      filteredCountries={filteredCountries}
+      handleShowCountryData={handleShowCountryData}
+      weather={weather}
+      index={index}
+      visibility={visibility}
+      length={filteredCountries.length}
+      />
     </div>
     <footer>Built with Love <span>❤</span> by <a href="https://twitter.com/hayats_codes" target="_blank" rel="noreferrer">HayatsCodes</a></footer>
     </>
