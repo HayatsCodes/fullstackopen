@@ -2,7 +2,7 @@
 const CountryData = ({ countries, index, weather }) => {
   if (!countries) {
     console.log("no country");
-    return <p className="hidden {}">Loading...</p>;
+    return <p>Loading...</p>;
   }
 
   return (

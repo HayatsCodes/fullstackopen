@@ -13,7 +13,7 @@ const View = ({
 }) => {
   if (!viewCountry) {
     if (!countries) {
-      return <p className="hidden {}">Loading...</p>;
+      return <p>Loading...</p>;
     } else {
       if (length === 0) {
         return (
