@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import './app.css'
+import Notification from './components/Notification'
 
 
 
@@ -13,6 +15,9 @@ const App = () => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
+  const [status, setStatus] = useState('')
+  const [statusMsg, setStatusMsg] = useState('')
+  const [display, setDisplay] = useState('hidden')
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -32,6 +37,7 @@ const App = () => {
     return (
       <form onSubmit={handleLogin}>
         <h2>Login to Application</h2>
+        <Notification display={display} status={status} message={statusMsg}/>
         <div>
           Username: 
           <input 
@@ -100,6 +106,14 @@ const handleLogin = async event => {
     setPassword('')
   } catch (error) {
     console.error(error)
+    setDisplay('show')
+    setStatus('error')
+    setStatusMsg('wrong username or password')
+    setTimeout(() => {
+      setDisplay('hidden')
+      setStatus('')
+      setStatusMsg('')
+    }, 5000)
   }
 }
 
@@ -117,11 +131,27 @@ const handleLogin = async event => {
       const blog = await blogService.create({title, author, url}, user.token)
       console.log(`blog: ${blog}`)
       setBlogs(blogs.concat(blog))
+      setDisplay('show')
+      setStatus('success')
+      setStatusMsg(`A new blog '${title}' by ${author} added`)
+      setTimeout(() => {
+        setDisplay('hidden')
+        setStatus('')
+        setStatusMsg('')
+      }, 5000)
       setTitle('')
       setAuthor('')
       setUrl('')
     } catch (error) {
       console.error(error)
+      setDisplay('show')
+      setStatus('error')
+      setStatusMsg(error.message)
+      setTimeout(() => {
+        setDisplay('hidden')
+        setStatus('')
+        setStatusMsg('')
+      }, 5000)
     }
   }
 
@@ -132,6 +162,7 @@ const handleLogin = async event => {
      : (
       <>
         <h2>Blogs</h2>
+        <Notification display={display} status={status} message={statusMsg}/>
         <p>{user.name} logged in</p>
         <button onClick={handleLogout}>Logout</button>
         <br />

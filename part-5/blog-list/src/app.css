@@ -1,0 +1,27 @@
+
+.error, .success {
+    background-color: whitesmoke;
+    padding: 5px;
+    width: 90%;
+    max-width: 90vw;
+    margin: 0 auto;
+    text-align: center;
+    font-size: 2rem;
+    border-radius: 5px;
+}
+
+.error {
+    border: 5px solid red;
+}
+
+.success {
+    border: 5px solid green;
+}
+
+.hidden {
+    display: none;
+}
+
+.show {
+    display: unset;
+}
