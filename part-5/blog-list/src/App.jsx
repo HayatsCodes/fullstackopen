@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Blog from "./components/Blog";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
@@ -19,6 +19,8 @@ const App = () => {
   const [status, setStatus] = useState("");
   const [statusMsg, setStatusMsg] = useState("");
   const [display, setDisplay] = useState("hidden");
+
+  const blogFormRef = useRef()
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -86,9 +88,9 @@ const App = () => {
   const addBlog = async (event) => {
     try {
       event.preventDefault();
+      blogFormRef.current.toggleVisibility()
       const user = JSON.parse(window.localStorage.getItem("loggedBlogappUser"));
       const blog = await blogService.create({ title, author, url }, user.token);
-      console.log(`blog: ${blog}`);
       setBlogs(blogs.concat(blog));
       setDisplay("show");
       setStatus("success");
@@ -134,7 +136,7 @@ const App = () => {
           <p>{user.name} logged in</p>
           <button onClick={handleLogout}>Logout</button>
           <br />
-          <Togglable buttonLabel={'New Blog'}>
+          <Togglable buttonLabel={'New Blog'} ref={blogFormRef}>
             <BlogForm
               addBlog={addBlog}
               title={title}
