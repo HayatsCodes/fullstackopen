@@ -1,6 +1,8 @@
-
-.error, .success {
+body {
     background-color: whitesmoke;
+}
+.error, .success {
+    background-color: rgb(148, 142, 142);
     padding: 5px;
     width: 90%;
     max-width: 90vw;
