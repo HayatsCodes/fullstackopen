@@ -5,6 +5,7 @@ import loginService from './services/login'
 import './app.css'
 import Notification from './components/Notification'
 import BlogForm from './components/BlogForm'
+import LoginForm from './components/LoginForm'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -42,31 +43,43 @@ const App = () => {
     setUrl(target.value)
   }
 
-  const loginForm = () => {
-    return (
-      <form onSubmit={handleLogin}>
-        <h2>Login to Application</h2>
-        <Notification display={display} status={status} message={statusMsg}/>
-        <div>
-          Username: 
-          <input 
-          type="text"
-          value={username}
-          onChange={({target}) => setUsername(target.value)}
-        />
-        </div>
-        <div>
-          Password: 
-          <input
-          type="password"
-          value={password}
-          onChange={({target}) => setPassword(target.value)}
-          />
-        </div>
-        <button type="submit">Login</button>
-      </form>
-    )
-}
+  const handleUsername = ({target}) => {
+    setUsername(target.value)
+  }
+
+  const handlePassword = ({target}) => {
+    setPassword(target.value)
+  }
+
+
+
+
+
+//   const loginForm = () => {
+//     return (
+//       <form onSubmit={handleLogin}>
+//         <h2>Login to Application</h2>
+//         <Notification display={display} status={status} message={statusMsg}/>
+//         <div>
+//           Username: 
+//           <input 
+//           type="text"
+//           value={username}
+//           onChange={({target}) => setUsername(target.value)}
+//         />
+//         </div>
+//         <div>
+//           Password: 
+//           <input
+//           type="password"
+//           value={password}
+//           onChange={({target}) => setPassword(target.value)}
+//           />
+//         </div>
+//         <button type="submit">Login</button>
+//       </form>
+//     )
+// }
 
 const handleLogin = async event => {
   event.preventDefault()
@@ -134,7 +147,16 @@ const handleLogin = async event => {
   return (
     <div>
      {user === null 
-       ? loginForm()
+       ? <LoginForm 
+          username={username}
+          password={password}
+          handleUsername={handleUsername}
+          handlePassword={handlePassword}
+          handleLogin={handleLogin}
+          display={display}
+          status={status}
+          statusMessage={statusMsg}
+       />
      : (
       <>
         <h2>Blogs</h2>
