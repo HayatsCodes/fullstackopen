@@ -1,6 +1,6 @@
 # FullStackOpen
 
-This repository contains my solutions and completed exercises for the [FullStackOpen](https://fullstackopen.com/) course offered by the University of Helsinki. The course covers modern web development, including React, Redux, Node.js, Typescript, MongoDB, GraphQL, REST, PostgreSQL and much more.
+This repository contains my solutions (Frontend) and completed exercises for the [FullStackOpen](https://fullstackopen.com/) course offered by the University of Helsinki. The course covers modern web development, including React, Redux, Node.js, Typescript, MongoDB, GraphQL, REST, PostgreSQL and much more.
 
 ## Table of Contents
 
