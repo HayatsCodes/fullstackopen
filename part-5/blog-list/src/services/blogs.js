@@ -7,6 +7,7 @@ const getAll = async () => {
 }
 
 const create = async (newObj, token) => {
+
   const config = {
     headers: {Authorization: `bearer ${token}`}
   }
@@ -15,4 +16,13 @@ const create = async (newObj, token) => {
   return response.data
 }
 
-export default { getAll, create }
+const update = async (id, newObj, token) => {
+  const config = {
+    headers: {Authorization: `bearer ${token}`}
+  }
+
+  const response = await axios.patch(`${baseUrl}/${id}`, newObj, config)
+  return response.data
+}
+
+export default { getAll, create, update }
