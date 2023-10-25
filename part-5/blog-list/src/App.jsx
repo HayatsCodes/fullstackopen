@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import Blog from "./components/Blog";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
@@ -13,14 +13,7 @@ const App = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
-  const [title, setTitle] = useState("");
-  const [author, setAuthor] = useState("");
-  const [url, setUrl] = useState("");
-  const [status, setStatus] = useState("");
-  const [statusMsg, setStatusMsg] = useState("");
-  const [display, setDisplay] = useState("hidden");
-
-  const blogFormRef = useRef()
+  const [notify, setNotify] = useState({display: "hidden", status: "", message: ""})
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -34,15 +27,6 @@ const App = () => {
     }
   }, []);
 
-  const handleTitle = ({ target }) => {
-    setTitle(target.value);
-  };
-  const handleAuthor = ({ target }) => {
-    setAuthor(target.value);
-  };
-  const handleUrl = ({ target }) => {
-    setUrl(target.value);
-  };
 
   const handleUsername = ({ target }) => {
     setUsername(target.value);
@@ -61,19 +45,14 @@ const App = () => {
         "loggedBlogappUser",
         JSON.stringify(returnedUser)
       );
-      // blogService.setToken(returnedUser.token)
       setUser(returnedUser);
       setUsername("");
       setPassword("");
     } catch (error) {
-      console.error(error);
-      setDisplay("show");
-      setStatus("error");
-      setStatusMsg("wrong username or password");
+        console.error(error);
+        setNotify({display: "show", status: "error", message: "wrong username or password"})
       setTimeout(() => {
-        setDisplay("hidden");
-        setStatus("");
-        setStatusMsg("");
+        setNotify({display: "hidden", status: "", message: ""})
       }, 5000);
     }
   };
@@ -85,36 +64,13 @@ const App = () => {
     setUser(null);
   };
 
-  const addBlog = async (event) => {
-    try {
-      event.preventDefault();
-      blogFormRef.current.toggleVisibility()
-      const user = JSON.parse(window.localStorage.getItem("loggedBlogappUser"));
-      const blog = await blogService.create({ title, author, url }, user.token);
-      setBlogs(blogs.concat(blog));
-      setDisplay("show");
-      setStatus("success");
-      setStatusMsg(`A new blog '${title}' by ${author} added`);
-      setTimeout(() => {
-        setDisplay("hidden");
-        setStatus("");
-        setStatusMsg("");
-      }, 5000);
-      setTitle("");
-      setAuthor("");
-      setUrl("");
-    } catch (error) {
-      console.error(error);
-      setDisplay("show");
-      setStatus("error");
-      setStatusMsg(error.message);
-      setTimeout(() => {
-        setDisplay("hidden");
-        setStatus("");
-        setStatusMsg("");
-      }, 5000);
-    }
-  };
+  const updateBlogs = newBlog => {
+    setBlogs(blogs.concat(newBlog))
+  }
+
+  const updateNotification = newNotification => {
+    setNotify(newNotification)
+  }
 
   return (
     <div>
@@ -125,26 +81,21 @@ const App = () => {
           handleUsername={handleUsername}
           handlePassword={handlePassword}
           handleLogin={handleLogin}
-          display={display}
-          status={status}
-          statusMessage={statusMsg}
+          display={notify.display}
+          status={notify.status}
+          statusMessage={notify.message}
         />
       ) : (
         <>
           <h2>Blogs</h2>
-          <Notification display={display} status={status} message={statusMsg} />
+          <Notification display={notify.display} status={notify.status} message={notify.message} />
           <p>{user.name} logged in</p>
           <button onClick={handleLogout}>Logout</button>
           <br />
-          <Togglable buttonLabel={'New Blog'} ref={blogFormRef}>
+          <Togglable buttonLabel={'New Blog'}>
             <BlogForm
-              addBlog={addBlog}
-              title={title}
-              url={url}
-              author={author}
-              handleTitle={handleTitle}
-              handleAuthor={handleAuthor}
-              handleUrl={handleUrl}
+              updateBlogs={updateBlogs}
+              updateNotification={updateNotification}
             />
           </Togglable>
           <br />

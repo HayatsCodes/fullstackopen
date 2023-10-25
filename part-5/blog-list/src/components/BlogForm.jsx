@@ -1,4 +1,36 @@
-const BlogForm = ({addBlog, title, author, url, handleTitle, handleAuthor, handleUrl}) => {
+import { useState } from "react";
+import blogService from '../services/blogs'
+const BlogForm = ({updateBlogs, updateNotification}) => {
+    const [title, setTitle] = useState('');
+    const [author, setAuthor] = useState('');
+    const [url, setUrl] = useState('');
+
+    const addBlog = async (event) => {
+        try {
+          event.preventDefault();
+          const user = JSON.parse(window.localStorage.getItem("loggedBlogappUser"));
+          const blog = await blogService.create({ title, author, url }, user.token);
+          updateBlogs(blog);
+          updateNotification({display: "show", status: "success", message: `A new blog '${title}' by ${author} added`})
+        //   setNotify({display: "show", status: "success", message: `A new blog '${title}' by ${author} added`})
+          setTimeout(() => {
+            updateNotification({display: "hidden", status: "", message: ''})
+            // setNotify({display: "hidden", status: "", message: ''})
+          }, 5000);
+          setTitle("");
+          setAuthor("");
+          setUrl("");
+        } catch (error) {
+          console.error(error);
+          updateNotification({display: "show", status: "error", message: error.message})
+        //   setNotify({display: "show", status: "error", message: error.message})
+          setTimeout(() => {
+            updateNotification({display: "hidden", status: "", message: ''})
+            // setNotify({display: "hidden", status: "", message: ''})
+          }, 5000);
+        }
+      };
+
     return (
       <form onSubmit={addBlog}>
         <h3>Create New</h3>
@@ -7,7 +39,7 @@ const BlogForm = ({addBlog, title, author, url, handleTitle, handleAuthor, handl
           <input
             type="text" 
             value={title}
-            onChange={handleTitle}
+            onChange={({target}) => setTitle(target.value)}
           />
         </div>
         <div>
@@ -15,7 +47,7 @@ const BlogForm = ({addBlog, title, author, url, handleTitle, handleAuthor, handl
           <input
             type="text" 
             value={author}
-            onChange={handleAuthor}
+            onChange={({target}) => setAuthor(target.value)}
           />
         </div>
         <div>
@@ -23,7 +55,7 @@ const BlogForm = ({addBlog, title, author, url, handleTitle, handleAuthor, handl
           <input
             type="text" 
             value={url}
-            onChange={handleUrl}
+            onChange={({target}) => setUrl(target.value)}
           />
         </div><br />
         <button type="submit">Create</button>
