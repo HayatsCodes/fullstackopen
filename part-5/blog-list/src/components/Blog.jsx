@@ -1,7 +1,7 @@
 import { useState } from "react";
 import blogService from "../services/blogs";
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, updateBlogs, updateNotification }) => {
   const [view, setView] = useState(false);
   const [likes, setLikes] = useState(blog.likes);
   const buttonStyle = {
@@ -22,14 +22,31 @@ const Blog = ({ blog }) => {
   };
 
   const handleLikes = async () => {
-    const user = JSON.parse(window.localStorage.getItem("loggedBlogappUser"));
+    const storedUser = JSON.parse(window.localStorage.getItem("loggedBlogappUser"));
     const updatedBlog = await blogService.update(
       blog.id,
       { likes: likes + 1 },
-      user.token
+      storedUser.token
     );
     setLikes(updatedBlog.likes);
   };
+
+  const handleRemove = async () => {
+    try {
+      if (window.confirm(`Remove blog "${blog.title}" by ${blog.author}`)) {
+        const storedUser = JSON.parse(window.localStorage.getItem("loggedBlogappUser"));
+        console.log(`storedUser: ${storedUser}`)
+        await blogService.remove(blog.id, storedUser.token)
+        updateBlogs(null, blog.id)
+      }
+    } catch (error) {
+      console.error(error)
+      updateNotification({display: "show", status: "error", message: error.message})
+      setTimeout(() => {
+        updateNotification({display: 'hide', status: '', message: ''})
+      }, 5000)
+    }
+  }
 
   return (
     <div style={blogStyle}>
@@ -52,7 +69,7 @@ const Blog = ({ blog }) => {
             Hide
           </button>
           <br />
-          <a href="">{blog.url}</a>
+          <a href={blog.url}>{blog.url}</a>
           <br />
           Likes {likes}
           <button style={buttonStyle} onClick={handleLikes}>
@@ -60,6 +77,8 @@ const Blog = ({ blog }) => {
           </button>
           <br />
           {blog.author}
+          <br />
+          <button style={{background: 'blue'}} onClick={handleRemove}>Remove</button>
           <br />
         </>
       )}

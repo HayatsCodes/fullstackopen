@@ -29,7 +29,6 @@ const App = () => {
     }
   }, []);
 
-
   const handleUsername = ({ target }) => {
     setUsername(target.value);
   };
@@ -66,8 +65,10 @@ const App = () => {
     setUser(null);
   };
 
-  const updateBlogs = newBlog => {
-    setBlogs(blogs.concat(newBlog))
+  const updateBlogs = (newBlog, id=null) => {
+    newBlog 
+    ? setBlogs(blogs.concat(newBlog))
+    : setBlogs(blogs.filter(blog => blog.id !== id))
   }
 
   const updateNotification = newNotification => {
@@ -106,8 +107,14 @@ const App = () => {
             />
           </Togglable>
           <br />
-          {blogs.map((blog) => (
-            <Blog key={blog.id} blog={blog} />
+          {blogs
+          .sort((a, b) => b.likes - a.likes)
+          .map((blog) => (
+            <Blog 
+            key={blog.id} 
+            blog={blog}
+            updateBlogs={updateBlogs}
+            updateNotification={updateNotification}/>
           ))}
         </>
       )}
