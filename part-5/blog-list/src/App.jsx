@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Blog from "./components/Blog";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
@@ -14,6 +14,8 @@ const App = () => {
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
   const [notify, setNotify] = useState({display: "hidden", status: "", message: ""})
+
+  const blogFormRef = useRef()
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -72,6 +74,10 @@ const App = () => {
     setNotify(newNotification)
   }
 
+  const updateFormVisibility = () => {
+    blogFormRef.current.toggleVisibility()
+  }
+
   return (
     <div>
       {user === null ? (
@@ -92,10 +98,11 @@ const App = () => {
           <p>{user.name} logged in</p>
           <button onClick={handleLogout}>Logout</button>
           <br />
-          <Togglable buttonLabel={'New Blog'}>
+          <Togglable buttonLabel={'New Blog'} ref={blogFormRef}>
             <BlogForm
               updateBlogs={updateBlogs}
               updateNotification={updateNotification}
+              updateFormVisibility={updateFormVisibility}
             />
           </Togglable>
           <br />

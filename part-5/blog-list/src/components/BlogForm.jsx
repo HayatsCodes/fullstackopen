@@ -1,6 +1,6 @@
 import { useState } from "react";
 import blogService from '../services/blogs'
-const BlogForm = ({updateBlogs, updateNotification}) => {
+const BlogForm = ({updateBlogs, updateNotification, updateFormVisibility}) => {
     const [title, setTitle] = useState('');
     const [author, setAuthor] = useState('');
     const [url, setUrl] = useState('');
@@ -8,14 +8,13 @@ const BlogForm = ({updateBlogs, updateNotification}) => {
     const addBlog = async (event) => {
         try {
           event.preventDefault();
+          updateFormVisibility()
           const user = JSON.parse(window.localStorage.getItem("loggedBlogappUser"));
           const blog = await blogService.create({ title, author, url }, user.token);
           updateBlogs(blog);
           updateNotification({display: "show", status: "success", message: `A new blog '${title}' by ${author} added`})
-        //   setNotify({display: "show", status: "success", message: `A new blog '${title}' by ${author} added`})
           setTimeout(() => {
             updateNotification({display: "hidden", status: "", message: ''})
-            // setNotify({display: "hidden", status: "", message: ''})
           }, 5000);
           setTitle("");
           setAuthor("");
@@ -23,10 +22,8 @@ const BlogForm = ({updateBlogs, updateNotification}) => {
         } catch (error) {
           console.error(error);
           updateNotification({display: "show", status: "error", message: error.message})
-        //   setNotify({display: "show", status: "error", message: error.message})
           setTimeout(() => {
             updateNotification({display: "hidden", status: "", message: ''})
-            // setNotify({display: "hidden", status: "", message: ''})
           }, 5000);
         }
       };
