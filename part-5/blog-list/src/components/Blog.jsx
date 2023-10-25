@@ -14,6 +14,8 @@ const Blog = ({ blog }) => {
     border: 'solid',
     borderWidth: 1,
     marginBottom: 5,
+    marginLeft: 'auto',
+    marginRight: 'auto',
     maxWidth: '800px'
   }
 
@@ -30,7 +32,7 @@ const Blog = ({ blog }) => {
       {blog.title} - <em>{blog.author}</em>
       <button style={buttonStyle} onClick={() => setView(false)}>Hide</button>
       <br />
-      {blog.url}
+      <a href="">{blog.url}</a>
       <br />
       Likes {blog.likes}
       <button style={buttonStyle}>Like</button>
