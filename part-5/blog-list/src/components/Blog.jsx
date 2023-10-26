@@ -1,49 +1,49 @@
-import { useState } from "react";
-import blogService from "../services/blogs";
+import { useState } from 'react'
+import blogService from '../services/blogs'
 
 const Blog = ({ blog, updateBlogs, updateNotification }) => {
-  const [view, setView] = useState(false);
-  const [likes, setLikes] = useState(blog.likes);
+  const [view, setView] = useState(false)
+  const [likes, setLikes] = useState(blog.likes)
   const buttonStyle = {
-    display: "inline-block",
-    marginLeft: "5px",
-    marginBottom: "1px",
-  };
+    display: 'inline-block',
+    marginLeft: '5px',
+    marginBottom: '1px',
+  }
 
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
-    border: "solid",
+    border: 'solid',
     borderWidth: 1,
     marginBottom: 5,
-    marginLeft: "auto",
-    marginRight: "auto",
-    maxWidth: "800px",
-  };
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    maxWidth: '800px',
+  }
 
   const handleLikes = async () => {
-    const storedUser = JSON.parse(window.localStorage.getItem("loggedBlogappUser"));
+    const storedUser = JSON.parse(window.localStorage.getItem('loggedBlogappUser'))
     const updatedBlog = await blogService.update(
       blog.id,
       { likes: likes + 1 },
       storedUser.token
-    );
-    setLikes(updatedBlog.likes);
-  };
+    )
+    setLikes(updatedBlog.likes)
+  }
 
   const handleRemove = async () => {
     try {
       if (window.confirm(`Remove blog "${blog.title}" by ${blog.author}`)) {
-        const storedUser = JSON.parse(window.localStorage.getItem("loggedBlogappUser"));
+        const storedUser = JSON.parse(window.localStorage.getItem('loggedBlogappUser'))
         console.log(`storedUser: ${storedUser}`)
         await blogService.remove(blog.id, storedUser.token)
         updateBlogs(null, blog.id)
       }
     } catch (error) {
       console.error(error)
-      updateNotification({display: "show", status: "error", message: error.message})
+      updateNotification({ display: 'show', status: 'error', message: error.message })
       setTimeout(() => {
-        updateNotification({display: 'hide', status: '', message: ''})
+        updateNotification({ display: 'hide', status: '', message: '' })
       }, 5000)
     }
   }
@@ -56,7 +56,7 @@ const Blog = ({ blog, updateBlogs, updateNotification }) => {
           <button
             style={buttonStyle}
             onClick={() => {
-              setView(true);
+              setView(true)
             }}
           >
             View
@@ -78,12 +78,12 @@ const Blog = ({ blog, updateBlogs, updateNotification }) => {
           <br />
           {blog.author}
           <br />
-          <button style={{background: 'blue'}} onClick={handleRemove}>Remove</button>
+          <button style={{ background: 'blue' }} onClick={handleRemove}>Remove</button>
           <br />
         </>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default Blog;
+export default Blog

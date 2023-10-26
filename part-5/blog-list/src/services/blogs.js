@@ -9,7 +9,7 @@ const getAll = async () => {
 const create = async (newObj, token) => {
 
   const config = {
-    headers: {Authorization: `bearer ${token}`}
+    headers: { Authorization: `bearer ${token}` }
   }
 
   const response = await axios.post(baseUrl, newObj, config)
@@ -18,7 +18,7 @@ const create = async (newObj, token) => {
 
 const update = async (id, newObj, token) => {
   const config = {
-    headers: {Authorization: `bearer ${token}`}
+    headers: { Authorization: `bearer ${token}` }
   }
 
   const response = await axios.patch(`${baseUrl}/${id}`, newObj, config)
@@ -27,7 +27,7 @@ const update = async (id, newObj, token) => {
 
 const remove = async (id, token) => {
   const config = {
-    headers: {Authorization: `bearer ${token}`}
+    headers: { Authorization: `bearer ${token}` }
   }
 
   const response = await axios.delete(`${baseUrl}/${id}`, config)
