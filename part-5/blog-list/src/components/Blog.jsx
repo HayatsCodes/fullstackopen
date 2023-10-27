@@ -1,9 +1,15 @@
 import { useState } from 'react'
 import blogService from '../services/blogs'
 
-const Blog = ({ blog, updateBlogs, updateNotification }) => {
+const Blog = ({ blog, updateBlogs, updateNotification, onLike }) => {
   const [view, setView] = useState(false)
   const [likes, setLikes] = useState(blog.likes)
+  let testEnv
+  if (onLike !== null) {
+    testEnv = true
+  } else {
+    testEnv = false
+  }
   const buttonStyle = {
     display: 'inline-block',
     marginLeft: '5px',
@@ -30,6 +36,9 @@ const Blog = ({ blog, updateBlogs, updateNotification }) => {
     )
     setLikes(updatedBlog.likes)
   }
+
+  const likeFn = testEnv ? onLike : handleLikes
+
 
   const handleRemove = async () => {
     try {
@@ -72,7 +81,7 @@ const Blog = ({ blog, updateBlogs, updateNotification }) => {
           <a href={blog.url}>{blog.url}</a>
           <br />
           Likes {likes}
-          <button style={buttonStyle} onClick={handleLikes}>
+          <button style={buttonStyle} className='like' onClick={likeFn}>
             Like
           </button>
           <br />

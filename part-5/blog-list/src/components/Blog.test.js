@@ -6,7 +6,7 @@ import userEvent from '@testing-library/user-event'
 
 import Blog from './Blog'
 
-let blog, container
+let blog, container, mockHandler
 
 beforeEach( () => {
   blog = {
@@ -16,9 +16,10 @@ beforeEach( () => {
     likes: 0
   }
 
-  container = render( <Blog blog={blog}/> ).container
-})
+  mockHandler = jest.fn()
 
+  container = render( <Blog blog={blog} onLike={mockHandler}/> ).container
+})
 
 
 test('Initially renders only title and author', () => {
@@ -39,4 +40,16 @@ test('Other info renders when view button is clicked', async () => {
   expect(div).toHaveTextContent(blog.author)
   expect(div).toHaveTextContent(blog.url)
   expect(div).toHaveTextContent(blog.likes)
+})
+
+test('clicking the like button twice calls event handler twice', async () => {
+  const user = userEvent.setup()
+  const button = screen.getByText('View')
+  await user.click(button)
+
+  const likeButton = container.querySelector('.like')
+  await user.click(likeButton)
+  await user.click(likeButton)
+
+  expect(mockHandler.mock.calls).toHaveLength(2)
 })

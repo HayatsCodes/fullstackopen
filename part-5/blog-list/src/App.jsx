@@ -29,6 +29,7 @@ const App = () => {
     }
   }, [])
 
+
   const handleUsername = ({ target }) => {
     setUsername(target.value)
   }
@@ -114,7 +115,9 @@ const App = () => {
                 key={blog.id}
                 blog={blog}
                 updateBlogs={updateBlogs}
-                updateNotification={updateNotification}/>
+                updateNotification={updateNotification}
+                onLike={null}
+              />
             ))}
         </>
       )}
