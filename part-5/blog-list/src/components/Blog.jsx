@@ -51,7 +51,7 @@ const Blog = ({ blog, updateBlogs, updateNotification }) => {
   return (
     <div style={blogStyle}>
       {!view ? (
-        <>
+        <div className='when-view-is-false'>
           {blog.title} - <em>{blog.author}</em>
           <button
             style={buttonStyle}
@@ -61,9 +61,9 @@ const Blog = ({ blog, updateBlogs, updateNotification }) => {
           >
             View
           </button>
-        </>
+        </div>
       ) : (
-        <>
+        <div className='when-view-is-true'>
           {blog.title} - <em>{blog.author}</em>
           <button style={buttonStyle} onClick={() => setView(false)}>
             Hide
@@ -80,7 +80,7 @@ const Blog = ({ blog, updateBlogs, updateNotification }) => {
           <br />
           <button style={{ background: 'blue' }} onClick={handleRemove}>Remove</button>
           <br />
-        </>
+        </div>
       )}
     </div>
   )
