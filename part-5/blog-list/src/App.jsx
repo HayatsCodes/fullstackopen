@@ -105,6 +105,7 @@ const App = () => {
               updateBlogs={updateBlogs}
               updateNotification={updateNotification}
               updateFormVisibility={updateFormVisibility}
+              onCreate={null}
             />
           </Togglable>
           <br />

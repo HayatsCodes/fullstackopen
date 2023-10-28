@@ -1,13 +1,21 @@
 import { useState } from 'react'
 import blogService from '../services/blogs'
-const BlogForm = ({ updateBlogs, updateNotification, updateFormVisibility }) => {
+const BlogForm = ({ updateBlogs, updateNotification, updateFormVisibility, createBlog }) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
 
+
   const addBlog = async (event) => {
     try {
+      console.log('before anything...')
       event.preventDefault()
+      if (createBlog) {
+        console.log('testing...')
+        createBlog({ title, author, url })
+        return
+      }
+      console.log('not testing...')
       updateFormVisibility()
       const user = JSON.parse(window.localStorage.getItem('loggedBlogappUser'))
       const blog = await blogService.create({ title, author, url }, user.token)
@@ -28,6 +36,8 @@ const BlogForm = ({ updateBlogs, updateNotification, updateFormVisibility }) => 
     }
   }
 
+
+
   return (
     <form onSubmit={addBlog}>
       <h3>Create New</h3>
@@ -37,6 +47,7 @@ const BlogForm = ({ updateBlogs, updateNotification, updateFormVisibility }) => 
           type="text"
           value={title}
           onChange={({ target }) => setTitle(target.value)}
+          placeholder='title'
         />
       </div>
       <div>
@@ -45,6 +56,7 @@ const BlogForm = ({ updateBlogs, updateNotification, updateFormVisibility }) => 
           type="text"
           value={author}
           onChange={({ target }) => setAuthor(target.value)}
+          placeholder='author'
         />
       </div>
       <div>
@@ -53,6 +65,7 @@ const BlogForm = ({ updateBlogs, updateNotification, updateFormVisibility }) => 
           type="text"
           value={url}
           onChange={({ target }) => setUrl(target.value)}
+          placeholder='url'
         />
       </div><br />
       <button type="submit">Create</button>
