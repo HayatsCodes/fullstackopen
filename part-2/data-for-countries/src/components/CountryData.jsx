@@ -14,7 +14,7 @@ const CountryData = ({ countries, index, weather }) => {
       </div>
       <div className="country-view-content">
         <h3>Capital</h3>
-        <p>{countries[index].capital[0]}</p>
+        <p>{countries[index].capital ? countries[index].capital[0]: 'No Capital'}</p>
       </div>
       <div className="country-view-content">
         <h3>Area</h3>

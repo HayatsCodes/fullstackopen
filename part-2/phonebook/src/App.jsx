@@ -7,7 +7,6 @@ import Persons from "./components/Persons";
 import personService from "./services/person";
 import Notification from "./components/Notification";
 
-
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [name, setName] = useState("");
@@ -40,9 +39,10 @@ const App = () => {
             .then(updatedPerson => 
                 setPersons(persons.map(person => person.id !== isFound.id ? person : updatedPerson))
               )
-              .catch(() => {
-                setStatusMessage(`Information of ${name} has already been deleted`)
+              .catch((error) => {
+                setStatusMessage(error.response.data.error)
                 setStatus('error')
+                setPersons(persons)
               })
           setName("");
           setNumber("");
@@ -72,7 +72,13 @@ const App = () => {
       setTimeout(() => {
         setStatusMessage(null)
       }, 5000)
-    });
+    }).catch(error => {
+      setStatus('error')
+      setStatusMessage(error.response.data.error)
+      setTimeout(() => {
+        setStatusMessage(null)
+      }, 5000)
+    })
   };
 
   const handleNameChange = (event) => {
