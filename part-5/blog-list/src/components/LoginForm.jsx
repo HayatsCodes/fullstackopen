@@ -5,7 +5,7 @@ const LoginForm = ({ username, password, handleLogin, handleUsername, handlePass
       <h2>Login to Application</h2>
       <Notification display={display} status={status} message={statusMessage}/>
       <div>
-          Username:
+          <span>Username:</span>
         <input
           type="text"
           value={username}
@@ -13,14 +13,14 @@ const LoginForm = ({ username, password, handleLogin, handleUsername, handlePass
         />
       </div>
       <div>
-          Password:
+      <span>Password:</span>
         <input
           type="password"
           value={password}
           onChange={handlePassword}
         />
       </div>
-      <button type="submit">Login</button>
+      <button type="submit" id='login-btn'>Login</button>
     </form>
   )
 }

@@ -58,7 +58,7 @@ const Blog = ({ blog, updateBlogs, updateNotification, onLike }) => {
   }
 
   return (
-    <div style={blogStyle} className='blog'>
+    <div style={blogStyle}>
       {!view ? (
         <div className='when-view-is-false'>
           {blog.title} - <em>{blog.author}</em>

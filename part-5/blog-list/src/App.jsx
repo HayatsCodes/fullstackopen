@@ -94,7 +94,7 @@ const App = () => {
           statusMessage={notify.message}
         />
       ) : (
-        <>
+        <div className='blogs'>
           <h2>Blogs</h2>
           <Notification display={notify.display} status={notify.status} message={notify.message} />
           <p>{user.name} logged in</p>
@@ -120,7 +120,7 @@ const App = () => {
                 onLike={null}
               />
             ))}
-        </>
+        </div>
       )}
     </div>
   )
