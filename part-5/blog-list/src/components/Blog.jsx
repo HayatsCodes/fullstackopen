@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import blogService from '../services/blogs'
 
-const Blog = ({ blog, updateBlogs, updateNotification, onLike }) => {
+const Blog = ({ blog, user, updateBlogs, updateNotification, onLike }) => {
   const [view, setView] = useState(false)
   const [likes, setLikes] = useState(blog.likes)
   let testEnv
@@ -86,9 +86,15 @@ const Blog = ({ blog, updateBlogs, updateNotification, onLike }) => {
           </button>
           <br />
           {blog.author}
+          {blog.user.id === user.id
+          ? <>
           <br />
           <button style={{ background: 'blue' }} onClick={handleRemove}>Remove</button>
           <br />
+          </>
+          : ''
+        }
+          
         </div>
       )}
     </div>

@@ -115,6 +115,7 @@ const App = () => {
               <Blog
                 key={blog.id}
                 blog={blog}
+                user={user}
                 updateBlogs={updateBlogs}
                 updateNotification={updateNotification}
                 onLike={null}
