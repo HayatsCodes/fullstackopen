@@ -42,7 +42,7 @@ const BlogForm = ({ updateBlogs, updateNotification, updateFormVisibility, creat
     <form onSubmit={addBlog}>
       <h3>Create New</h3>
       <div>
-          Title:
+          <span>Title:</span>
         <input
           type="text"
           value={title}
@@ -51,7 +51,7 @@ const BlogForm = ({ updateBlogs, updateNotification, updateFormVisibility, creat
         />
       </div>
       <div>
-          Author:
+          <span>Author:</span>
         <input
           type="text"
           value={author}
@@ -60,7 +60,7 @@ const BlogForm = ({ updateBlogs, updateNotification, updateFormVisibility, creat
         />
       </div>
       <div>
-          URL:
+          <span>URL:</span>
         <input
           type="text"
           value={url}
@@ -68,7 +68,7 @@ const BlogForm = ({ updateBlogs, updateNotification, updateFormVisibility, creat
           placeholder='url'
         />
       </div><br />
-      <button type="submit">Create</button>
+      <button type="submit" id='create-blog-btn'>Create</button>
     </form>
   )
 }

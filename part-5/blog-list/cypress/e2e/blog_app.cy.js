@@ -16,7 +16,7 @@ describe('Blog app', function() {
     cy.get('.blogs').should('not.exist')
   })
 
-  describe.only('Login', function () {
+  describe('Login', function () {
 
     it('succeeds with correct credentials', function() {
       cy.contains('Username')
@@ -40,6 +40,29 @@ describe('Blog app', function() {
       cy.get('#login-btn').click()
       cy.get('.error').should('have.css', 'border-color', 'rgb(255, 0, 0)');
       cy.contains('wrong username or password')
+    })
+  })
+
+  describe.only('When logged in', function() {
+    beforeEach(function() {
+      cy.login({ username: 'mluukkai', password: 'salainen' })
+    })
+
+    it('A blog can be created', function() {
+      cy.contains('New Blog').click()
+
+      cy.contains('Title')
+      .next().type('E2E Testing blog')
+
+      cy.contains('Author')
+      .next().type('HayatsCodes')
+
+      cy.contains('URL')
+      .next().type('http://example.com')
+
+      cy.get('#create-blog-btn').click()
+      cy.get('.success').should('have.css', 'border-color', 'rgb(0, 128, 0)');
+      cy.contains("A new blog 'E2E Testing blog' by HayatsCodes added")
     })
   })
 })
