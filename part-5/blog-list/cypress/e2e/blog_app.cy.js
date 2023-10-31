@@ -13,10 +13,11 @@ describe('Blog app', function() {
   it('Login form is shown', function() {
     cy.contains('Login to Application')
     cy.get('.login-form')
-    cy.get('.blogs').should('not.exist') 
+    cy.get('.blogs').should('not.exist')
   })
 
   describe.only('Login', function () {
+
     it('succeeds with correct credentials', function() {
       cy.contains('Username')
       .next().type('mluukkai')
@@ -26,6 +27,19 @@ describe('Blog app', function() {
 
       cy.get('#login-btn').click()
       cy.get('.blogs')
+    })
+
+    
+    it('fails with wrong credentials', function() {
+      cy.contains('Username')
+      .next().type('fake')
+
+      cy.contains('Password')
+      .next().type('none')
+
+      cy.get('#login-btn').click()
+      cy.get('.error')
+      cy.contains('wrong username or password')
     })
   })
 })
