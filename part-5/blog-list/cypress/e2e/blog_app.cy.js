@@ -68,13 +68,21 @@ describe('Blog app', function() {
     describe.only('When a blog exist', function () {
       beforeEach(function() {
         cy.createBlog({ title: 'E2E Testing blog', author: 'HayatsCodes', url: 'http://example.com' })
-      })    
+      }) 
+
       it('Users can like a blog', function() {
         cy.contains('View').click()
         cy.contains('Likes 0')
         cy.get('.like').click()
         cy.contains('Likes 1')
-      })    
+      })
+
+      it('Creator of blog can delete the blog', function () {
+        cy.contains('E2E Testing blog').should('exist')
+        cy.contains('View').click()
+        cy.contains('Remove').click()
+        cy.contains('E2E Testing blog').should('not.exist')
+      })
     })
   })
 })
