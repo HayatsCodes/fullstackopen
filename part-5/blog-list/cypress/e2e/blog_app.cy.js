@@ -38,7 +38,7 @@ describe('Blog app', function() {
       .next().type('none')
 
       cy.get('#login-btn').click()
-      cy.get('.error')
+      cy.get('.error').should('have.css', 'border-color', 'rgb(255, 0, 0)');
       cy.contains('wrong username or password')
     })
   })
