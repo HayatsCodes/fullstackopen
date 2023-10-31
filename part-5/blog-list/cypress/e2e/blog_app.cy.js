@@ -43,7 +43,7 @@ describe('Blog app', function() {
     })
   })
 
-  describe.only('When logged in', function() {
+  describe('When logged in', function() {
     beforeEach(function() {
       cy.login({ username: 'mluukkai', password: 'salainen' })
     })
@@ -63,6 +63,18 @@ describe('Blog app', function() {
       cy.get('#create-blog-btn').click()
       cy.get('.success').should('have.css', 'border-color', 'rgb(0, 128, 0)');
       cy.contains("A new blog 'E2E Testing blog' by HayatsCodes added")
+    })
+
+    describe.only('When a blog exist', function () {
+      beforeEach(function() {
+        cy.createBlog({ title: 'E2E Testing blog', author: 'HayatsCodes', url: 'http://example.com' })
+      })    
+      it('Users can like a blog', function() {
+        cy.contains('View').click()
+        cy.contains('Likes 0')
+        cy.get('.like').click()
+        cy.contains('Likes 1')
+      })    
     })
   })
 })
