@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import blogService from '../services/blogs'
 
-const Blog = ({ blog, user, updateBlogs, updateNotification, onLike }) => {
+const Blog = ({ blogs, blog, user, updateBlogs, updateNotification, onLike }) => {
   const [view, setView] = useState(false)
   const [likes, setLikes] = useState(blog.likes)
   let testEnv
@@ -35,6 +35,8 @@ const Blog = ({ blog, user, updateBlogs, updateNotification, onLike }) => {
       storedUser.token
     )
     setLikes(updatedBlog.likes)
+    const modifiedBlogs = blogs.map((b) => (b.id === blog.id ? updatedBlog : b));
+    updateBlogs(modifiedBlogs)
   }
 
   const likeFn = testEnv ? onLike : handleLikes

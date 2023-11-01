@@ -15,7 +15,6 @@ const BlogForm = ({ updateBlogs, updateNotification, updateFormVisibility, creat
         createBlog({ title, author, url })
         return
       }
-      console.log('not testing...')
       updateFormVisibility()
       const user = JSON.parse(window.localStorage.getItem('loggedBlogappUser'))
       const blog = await blogService.create({ title, author, url }, user.token)

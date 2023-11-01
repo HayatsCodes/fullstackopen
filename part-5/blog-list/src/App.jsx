@@ -67,6 +67,10 @@ const App = () => {
   }
 
   const updateBlogs = (newBlog, id=null) => {
+    if (Array.isArray(newBlog)) {
+      setBlogs(newBlog)
+      return;
+    }
     newBlog
       ? setBlogs(blogs.concat(newBlog))
       : setBlogs(blogs.filter(blog => blog.id !== id))
@@ -114,6 +118,7 @@ const App = () => {
             .map((blog) => (
               <Blog
                 key={blog.id}
+                blogs={blogs}
                 blog={blog}
                 user={user}
                 updateBlogs={updateBlogs}
