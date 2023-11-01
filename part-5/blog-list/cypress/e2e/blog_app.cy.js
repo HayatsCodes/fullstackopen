@@ -65,7 +65,7 @@ describe('Blog app', function() {
       cy.contains("A new blog 'E2E Testing blog' by HayatsCodes added")
     })
 
-    describe.only('When a blog exist', function () {
+    describe('When a blog exist', function () {
       beforeEach(function() {
         cy.createBlog({ title: 'E2E Testing blog', author: 'HayatsCodes', url: 'http://example.com' })
       }) 
@@ -96,6 +96,20 @@ describe('Blog app', function() {
 
         cy.contains('View').click()
         cy.contains('Remove').should('not.exist')
+      })
+
+      it.only('Blogs are ordered by the most likes', function () {
+        cy.createBlog({ title: 'New testing blog', author: 'Oakley', url: 'http://example.com' })
+
+        cy.get('.blog').eq(0).should('contain', 'E2E Testing blog')
+        cy.get('.blog').eq(1).should('contain', 'New testing blog')
+
+        cy.get('.view-btn').eq(1).click()
+
+        cy.get('.like').click()
+        cy.get('.hide-btn').click()
+        cy.get('.blog').eq(0).should('contain', 'New testing blog')
+        cy.get('.blog').eq(1).should('contain', 'E2E Testing blog')
       })
     })
   })

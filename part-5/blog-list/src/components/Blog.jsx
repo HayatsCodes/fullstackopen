@@ -62,10 +62,11 @@ const Blog = ({ blogs, blog, user, updateBlogs, updateNotification, onLike }) =>
   return (
     <div style={blogStyle}>
       {!view ? (
-        <div className='when-view-is-false'>
+        <div className='when-view-is-false blog'>
           {blog.title} - <em>{blog.author}</em>
           <button
             style={buttonStyle}
+            className='view-btn'
             onClick={() => {
               setView(true)
             }}
@@ -74,9 +75,9 @@ const Blog = ({ blogs, blog, user, updateBlogs, updateNotification, onLike }) =>
           </button>
         </div>
       ) : (
-        <div className='when-view-is-true'>
+        <div className='when-view-is-true blog'>
           {blog.title} - <em>{blog.author}</em>
-          <button style={buttonStyle} onClick={() => setView(false)}>
+          <button style={buttonStyle} className='hide-btn' onClick={() => setView(false)}>
             Hide
           </button>
           <br />
