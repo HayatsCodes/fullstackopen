@@ -83,6 +83,20 @@ describe('Blog app', function() {
         cy.contains('Remove').click()
         cy.contains('E2E Testing blog').should('not.exist')
       })
+
+      it('Non-creator of a blog can not see the delete button', function () {
+        const newUser = {
+          name: 'Matt Luka',
+          username: 'maluk',
+          password: 'lainense'
+        }
+
+        cy.request('POST', 'http://localhost:3003/api/users/', newUser)
+        cy.login({username: newUser.username, password: newUser.password})
+
+        cy.contains('View').click()
+        cy.contains('Remove').should('not.exist')
+      })
     })
   })
 })
