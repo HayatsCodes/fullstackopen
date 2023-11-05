@@ -20,8 +20,8 @@ const AnecdoteList = () => {
   const filteredAnecdotes = !filter 
     ? anecdotes 
     : anecdotes.filter(anecdote => regex.test(anecdote.content))
-  const sortedAnecdotes = [...filteredAnecdotes].sort((a, b) => b.votes - a.votes);
 
+  const sortedAnecdotes = [...filteredAnecdotes].sort((a, b) => b.votes - a.votes);
 
   return (
     <>
