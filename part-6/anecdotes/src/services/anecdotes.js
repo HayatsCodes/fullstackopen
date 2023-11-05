@@ -1,9 +1,16 @@
 import axios from "axios"
-const baseUrl = 'http://localhost:3001'
+const baseUrl = 'http://localhost:3001/anecdotes'
 
 const getAll = async () => {
-    const response = await axios.get(`${baseUrl}/anecdotes`)
+    const response = await axios.get(`${baseUrl}`)
     return response.data
 }
 
-export default { getAll }
+const createNew = async (content) => {
+    const object = {content, votes: 0}
+    const response = await axios.post(`${baseUrl}`, object)
+    console.log('response: ', response.data)
+    return response.data
+}
+
+export default { getAll, createNew }
