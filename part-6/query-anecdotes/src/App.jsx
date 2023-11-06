@@ -5,14 +5,18 @@ import Notification from './components/Notification'
 
 const App = () => {
 
+
   const result = useQuery({
     queryKey: ['anecdotes'],
     queryFn: getAnecdotes,
+    refetchOnWindowFocus: false,
     retry: 1
   })
 
+ 
+
   const handleVote = (anecdote) => {
-    console.log('vote')
+    console.log('new vote')
   }
 
   if ( result.isLoading ) {
