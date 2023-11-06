@@ -23,8 +23,8 @@ const AnecdoteForm = () => {
     newAnecdoteMutation.mutate(content)
     dispatch({type: 'SET_NOTIFICATION', payload: `You created '${content}'`})
     setTimeout(() => {
-      dispatch('')
-    })
+      dispatch({type: 'SET_NOTIFICATION', payload: ''})
+    }, 5000)
 }
 
   return (
