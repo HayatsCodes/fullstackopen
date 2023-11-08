@@ -74,11 +74,15 @@ const CreateNew = (props) => {
       author,
       info,
       votes: 0
-    })
+  })
     setContent('')
     setAuthor('')
     setInfo('')
     navigate('/')
+    props.showMessage(`a new anecdote '${content}' created`)
+    setTimeout(() => {
+      props.showMessage('')
+    }, 5000)
   }
 
   return (
@@ -102,6 +106,17 @@ const CreateNew = (props) => {
     </div>
   )
 
+}
+
+const Notification = ({message}) => {
+  if (message) {
+    return (
+      <div>
+        {message}
+      </div>
+    )
+  }
+  return null
 }
 
 const App = () => {
@@ -145,14 +160,18 @@ const App = () => {
 
   const match = useMatch('/anecdotes/:id')
   const anecdote = match ? anecdoteById(Number(match.params.id)) : null
+  const showMessage = (message) => {
+    setNotification(message)
+  }
 
   return (
     <>
       <h1>Software anecdotes</h1>
+      <Notification message={notification}/>
       <Menu />
       <Routes>
         <Route path='/anecdotes/:id' element={<Anecdote anecdote={anecdote}/>} />
-        <Route path='/create' element={<CreateNew addNew={addNew}/>} />
+        <Route path='/create' element={<CreateNew addNew={addNew} showMessage={showMessage}/>} />
         <Route path='/about' element={<About />} />
         <Route path='/' element={<AnecdoteList anecdotes={anecdotes}/>} />
       </Routes>
