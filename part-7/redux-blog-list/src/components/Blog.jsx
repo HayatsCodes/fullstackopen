@@ -1,7 +1,10 @@
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import blogService from '../services/blogs'
+import { setMessage, setDisplay, setStatus } from '../reducers/notificationReducer'
 
-const Blog = ({ blogs, blog, user, updateBlogs, updateNotification, onLike }) => {
+const Blog = ({ blogs, blog, user, updateBlogs, onLike }) => {
+  const dispatch = useDispatch()
   const [view, setView] = useState(false)
   const [likes, setLikes] = useState(blog.likes)
   let testEnv
@@ -52,9 +55,15 @@ const Blog = ({ blogs, blog, user, updateBlogs, updateNotification, onLike }) =>
       }
     } catch (error) {
       console.error(error)
-      updateNotification({ display: 'show', status: 'error', message: error.message })
+      // updateNotification({ display: 'show', status: 'error', message: error.message })
+      dispatch(setMessage(error.message))
+      dispatch(setDisplay('show'))
+      dispatch(setStatus('error'))
       setTimeout(() => {
-        updateNotification({ display: 'hide', status: '', message: '' })
+        // updateNotification({ display: 'hide', status: '', message: '' })
+        dispatch(setMessage(''))
+        dispatch(setDisplay('hide'))
+        dispatch(setStatus(''))
       }, 5000)
     }
   }
