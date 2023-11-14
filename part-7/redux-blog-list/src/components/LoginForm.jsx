@@ -1,9 +1,9 @@
 import Notification from './Notification'
-const LoginForm = ({ username, password, handleLogin, handleUsername, handlePassword, display, status, statusMessage }) => {
+const LoginForm = ({ username, password, handleLogin, handleUsername, handlePassword }) => {
   return (
     <form onSubmit={handleLogin} className='login-form'>
       <h2>Login to Application</h2>
-      <Notification display={display} status={status} message={statusMessage}/>
+      <Notification />
       <div>
           <span>Username:</span>
         <input

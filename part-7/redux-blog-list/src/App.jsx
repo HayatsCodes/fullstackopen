@@ -1,14 +1,17 @@
 import { useState, useEffect, useRef } from 'react'
+import { useDispatch } from 'react-redux'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import './app.css'
 import Notification from './components/Notification'
+import { setMessage, setDisplay, setStatus } from './reducers/notificationReducer'
 import BlogForm from './components/BlogForm'
 import LoginForm from './components/LoginForm'
 import Togglable from './components/Togglable'
 
 const App = () => {
+  const dispatch = useDispatch()
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -52,9 +55,13 @@ const App = () => {
       setPassword('')
     } catch (error) {
       console.error(error)
-      setNotify({ display: 'show', status: 'error', message: 'wrong username or password' })
+      dispatch(setMessage('wrong username or password'))
+      dispatch(setDisplay('show'))
+      dispatch(setStatus('error'))
       setTimeout(() => {
-        setNotify({ display: 'hidden', status: '', message: '' })
+        dispatch(setMessage(''))
+        dispatch(setDisplay('hidden'))
+        dispatch(setStatus(''))
       }, 5000)
     }
   }
@@ -93,9 +100,6 @@ const App = () => {
           handleUsername={handleUsername}
           handlePassword={handlePassword}
           handleLogin={handleLogin}
-          display={notify.display}
-          status={notify.status}
-          statusMessage={notify.message}
         />
       ) : (
         <div className='blogs'>
