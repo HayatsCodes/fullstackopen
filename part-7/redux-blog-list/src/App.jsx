@@ -104,7 +104,7 @@ const App = () => {
       ) : (
         <div className='blogs'>
           <h2>Blogs</h2>
-          <Notification display={notify.display} status={notify.status} message={notify.message} />
+          <Notification />
           <p>{user.name} logged in</p>
           <button onClick={handleLogout}>Logout</button>
           <br />
@@ -126,7 +126,6 @@ const App = () => {
                 blog={blog}
                 user={user}
                 updateBlogs={updateBlogs}
-                updateNotification={updateNotification}
                 onLike={null}
               />
             ))}

@@ -1,6 +1,11 @@
 import { useState } from 'react'
 import blogService from '../services/blogs'
-const BlogForm = ({ updateBlogs, updateNotification, updateFormVisibility, createBlog }) => {
+import { setMessage, setDisplay, setStatus } from '../reducers/notificationReducer'
+import { useDispatch } from 'react-redux'
+
+const BlogForm = ({ updateBlogs, updateFormVisibility, createBlog }) => {
+  const dispatch = useDispatch()
+
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
@@ -19,18 +24,26 @@ const BlogForm = ({ updateBlogs, updateNotification, updateFormVisibility, creat
       const user = JSON.parse(window.localStorage.getItem('loggedBlogappUser'))
       const blog = await blogService.create({ title, author, url }, user.token)
       updateBlogs(blog)
-      updateNotification({ display: 'show', status: 'success', message: `A new blog '${title}' by ${author} added` })
+      dispatch(setMessage(`A new blog '${title}' by ${author} added`))
+      dispatch(setDisplay('show'))
+      dispatch(setStatus('success'))
       setTimeout(() => {
-        updateNotification({ display: 'hidden', status: '', message: '' })
+        dispatch(setMessage(''))
+        dispatch(setDisplay('hidden'))
+        dispatch(setStatus(''))
       }, 5000)
       setTitle('')
       setAuthor('')
       setUrl('')
     } catch (error) {
       console.error(error)
-      updateNotification({ display: 'show', status: 'error', message: error.message })
+      dispatch(setMessage(error.message))
+      dispatch(setDisplay('show'))
+      dispatch(setStatus('error'))
       setTimeout(() => {
-        updateNotification({ display: 'hidden', status: '', message: '' })
+        dispatch(setMessage(''))
+        dispatch(setDisplay('hidden'))
+        dispatch(setStatus(''))
       }, 5000)
     }
   }
