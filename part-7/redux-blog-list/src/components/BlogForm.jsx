@@ -2,8 +2,9 @@ import { useState } from 'react'
 import blogService from '../services/blogs'
 import { setMessage, setDisplay, setStatus } from '../reducers/notificationReducer'
 import { useDispatch } from 'react-redux'
+import { appendBlog } from '../reducers/blogsReducer'
 
-const BlogForm = ({ updateBlogs, updateFormVisibility, createBlog }) => {
+const BlogForm = ({ updateFormVisibility, createBlog }) => {
   const dispatch = useDispatch()
 
   const [title, setTitle] = useState('')
@@ -23,7 +24,7 @@ const BlogForm = ({ updateBlogs, updateFormVisibility, createBlog }) => {
       updateFormVisibility()
       const user = JSON.parse(window.localStorage.getItem('loggedBlogappUser'))
       const blog = await blogService.create({ title, author, url }, user.token)
-      updateBlogs(blog)
+      dispatch(appendBlog(blog))
       dispatch(setMessage(`A new blog '${title}' by ${author} added`))
       dispatch(setDisplay('show'))
       dispatch(setStatus('success'))

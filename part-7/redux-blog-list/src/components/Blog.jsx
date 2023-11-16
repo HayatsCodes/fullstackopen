@@ -2,8 +2,9 @@ import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import blogService from '../services/blogs'
 import { setMessage, setDisplay, setStatus } from '../reducers/notificationReducer'
+import { setBlogs } from '../reducers/blogsReducer'
 
-const Blog = ({ blogs, blog, user, updateBlogs, onLike }) => {
+const Blog = ({ blogs, blog, user, onLike }) => {
   const dispatch = useDispatch()
   const [view, setView] = useState(false)
   const [likes, setLikes] = useState(blog.likes)
@@ -38,8 +39,8 @@ const Blog = ({ blogs, blog, user, updateBlogs, onLike }) => {
       storedUser.token
     )
     setLikes(updatedBlog.likes)
-    const modifiedBlogs = blogs.map((b) => (b.id === blog.id ? updatedBlog : b));
-    updateBlogs(modifiedBlogs)
+    const modifiedBlogs = blogs.map((b) => (b.id === blog.id ? updatedBlog : b))
+    dispatch(setBlogs(modifiedBlogs))
   }
 
   const likeFn = testEnv ? onLike : handleLikes
@@ -51,16 +52,15 @@ const Blog = ({ blogs, blog, user, updateBlogs, onLike }) => {
         const storedUser = JSON.parse(window.localStorage.getItem('loggedBlogappUser'))
         console.log(`storedUser: ${storedUser}`)
         await blogService.remove(blog.id, storedUser.token)
-        updateBlogs(null, blog.id)
+        const modifiedBlogs = blogs.filter((b) => b.id !== blog.id)
+        dispatch(setBlogs(modifiedBlogs))
       }
     } catch (error) {
       console.error(error)
-      // updateNotification({ display: 'show', status: 'error', message: error.message })
       dispatch(setMessage(error.message))
       dispatch(setDisplay('show'))
       dispatch(setStatus('error'))
       setTimeout(() => {
-        // updateNotification({ display: 'hide', status: '', message: '' })
         dispatch(setMessage(''))
         dispatch(setDisplay('hide'))
         dispatch(setStatus(''))
