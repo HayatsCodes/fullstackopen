@@ -9,6 +9,7 @@ import BlogForm from './components/BlogForm'
 import LoginForm from './components/LoginForm'
 import Togglable from './components/Togglable'
 import { initializeBlogs } from './reducers/blogsReducer'
+import { setUser } from './reducers/userReducer'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -16,7 +17,7 @@ const App = () => {
   // const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [user, setUser] = useState(null)
+  // const [user, setUser] = useState(null)
 
   const blogFormRef = useRef()
 
@@ -26,13 +27,13 @@ const App = () => {
   }, [])
 
   const blogs = useSelector(state => state.blogs) || []
-  console.log(`blogs: ${blogs}`)
+  const user = useSelector(state => state.user)
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
-      setUser(user)
+      dispatch(setUser(user))
     }
   }, [])
 
@@ -54,7 +55,9 @@ const App = () => {
         'loggedBlogappUser',
         JSON.stringify(returnedUser)
       )
-      setUser(returnedUser)
+      // setUser(returnedUser)
+      dispatch(setUser(returnedUser))
+      console.log(`returnedUser: ${JSON.stringify(returnedUser)}`)
       setUsername('')
       setPassword('')
     } catch (error) {
@@ -72,9 +75,8 @@ const App = () => {
 
   const handleLogout = (event) => {
     event.preventDefault()
-    console.log(`Logging out ${user.username}`)
     window.localStorage.removeItem('loggedBlogappUser')
-    setUser(null)
+    dispatch(setUser(null))
   }
 
 
@@ -114,7 +116,6 @@ const App = () => {
                 key={blog.id}
                 blogs={blogs}
                 blog={blog}
-                user={user}
                 onLike={null}
               />
             ))) : ''}

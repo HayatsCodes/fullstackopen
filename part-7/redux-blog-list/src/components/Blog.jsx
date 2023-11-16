@@ -1,11 +1,12 @@
 import { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import blogService from '../services/blogs'
 import { setMessage, setDisplay, setStatus } from '../reducers/notificationReducer'
 import { setBlogs } from '../reducers/blogsReducer'
 
-const Blog = ({ blogs, blog, user, onLike }) => {
+const Blog = ({ blogs, blog, onLike }) => {
   const dispatch = useDispatch()
+  const user = useSelector(state => state.user)
   const [view, setView] = useState(false)
   const [likes, setLikes] = useState(blog.likes)
   let testEnv
