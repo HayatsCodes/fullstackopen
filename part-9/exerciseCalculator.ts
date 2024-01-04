@@ -9,8 +9,6 @@ interface ExercisesResult {
     average: number
 }
 
-
-
 const calculateExercises = (dailyExercises: number[], target: number): ExercisesResult => {
     const periodLength = dailyExercises.length
     let countTrainingDays = 0

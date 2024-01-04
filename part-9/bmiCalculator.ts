@@ -33,13 +33,13 @@ const calculateBmi = (height: number, weight: number): string => {
 }
 
 try {
-    const arguments = process.argv.slice(2)
-    const {height, weight} = parseArguments(arguments)
-    console.log(calculateBmi(height, weight))
+    const args = process.argv.slice(2);
+    const { height, weight } = parseArguments(args);
+    console.log(calculateBmi(height, weight));
 } catch (error: unknown) {
-    let errorMessage = 'Something bad happened.'
-  if (error instanceof Error) {
-    errorMessage += ' Error: ' + error.message;
-  }
-  console.log(errorMessage);
+    let errorMessage = 'Something bad happened.';
+    if (error instanceof Error) {
+        errorMessage += ' Error: ' + error.message;
+    }
+    console.log(errorMessage);
 }
