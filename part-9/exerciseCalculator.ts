@@ -51,4 +51,9 @@ const calculateExercises = (dailyExercises: number[], target: number): Exercises
     }
 }
 
-console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2))
+const allArguments = process.argv.slice(2)
+const target = Number(allArguments[0])
+const exercises = allArguments.slice(1).map(exercise => Number(exercise))
+
+
+console.log(calculateExercises(exercises, target))

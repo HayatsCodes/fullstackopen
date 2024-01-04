@@ -1,11 +1,25 @@
-// Below 18.5	Underweight
-// 18.5 – 24.9	Healthy Weight
-// 25.0 – 29.9	Overweight
-// 30.0 and Above	Obesity
+interface BmiValues {
+    height: number,
+    weight: number
+}
+
+const parseArguments = (args: string[]): BmiValues => {
+    if (args.length < 2) throw new Error('Not enough arguments');
+    if (args.length > 2) throw new Error('Too many arguments');
+  
+    if (!isNaN(Number(args[0])) && !isNaN(Number(args[1]))) {
+      return {
+        height: Number(args[0]),
+        weight: Number(args[1])
+      }
+    } else {
+      throw new Error('Provided values were not numbers!');
+    }
+  }
 
 const calculateBmi = (height: number, weight: number): string => {
     const heightInMeterSquared = (height / 100) ** 2;
-    const result = weight /  heightInMeterSquared;
+    const result = weight / heightInMeterSquared;
 
     if (result < 18.5) {
         return 'Underweight'
@@ -18,4 +32,14 @@ const calculateBmi = (height: number, weight: number): string => {
     }
 }
 
-console.log(calculateBmi(180, 74))
+try {
+    const arguments = process.argv.slice(2)
+    const {height, weight} = parseArguments(arguments)
+    console.log(calculateBmi(height, weight))
+} catch (error: unknown) {
+    let errorMessage = 'Something bad happened.'
+  if (error instanceof Error) {
+    errorMessage += ' Error: ' + error.message;
+  }
+  console.log(errorMessage);
+}
