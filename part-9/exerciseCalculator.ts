@@ -9,7 +9,7 @@ interface ExercisesResult {
     average: number
 }
 
-const calculateExercises = (dailyExercises: number[], target: number): ExercisesResult => {
+export const calculateExercises = (dailyExercises: number[], target: number): ExercisesResult => {
     const periodLength = dailyExercises.length;
     let countTrainingDays = 0;
     dailyExercises.forEach(exercise => {
@@ -49,9 +49,9 @@ const calculateExercises = (dailyExercises: number[], target: number): Exercises
     };
 };
 
-const allArguments = process.argv.slice(2);
-const target = Number(allArguments[0]);
-const exercises = allArguments.slice(1).map(exercise => Number(exercise));
+// const allArguments = process.argv.slice(2);
+// const target = Number(allArguments[0]);
+// const exercises = allArguments.slice(1).map(exercise => Number(exercise));
 
 
-console.log(calculateExercises(exercises, target));
+// console.log(calculateExercises(exercises, target));
