@@ -1,7 +1,13 @@
+export enum Gender {
+    Male = 'male',
+    Female = 'female',
+    Other = 'other'
+}
+
 export interface Patients{
     id: string,
     name: string,
-    gender: string,
+    gender: Gender,
     occupation: string,
     ssn: string,
     dateOfBirth: string
