@@ -21,7 +21,12 @@ interface CoursePartBackground extends CoursePartBase, CoursePartDesc {
   kind: "background"
 }
 
-type CoursePart = CoursePartBasic | CoursePartGroup | CoursePartBackground;
+interface CoursePartRequirement extends CoursePartBase, CoursePartDesc {
+  requirements: ["nodejs", "jest"],
+  kind: "special"
+}
+
+type CoursePart = CoursePartBasic | CoursePartGroup | CoursePartBackground | CoursePartRequirement;
 
 
 const Part = ({ part }: { part: CoursePart }) => {
@@ -29,25 +34,31 @@ const Part = ({ part }: { part: CoursePart }) => {
     case 'basic':
       return (
         <div>
-          <p>Name: {part.name}</p>
-          <p>Exercise Count: {part.exerciseCount}</p>
-          <p>Description: {part.description}</p>
+          <h2>{part.name} {part.exerciseCount}</h2>
+          <p> {part.description}</p>
         </div>
       );
     case 'group':
       return (
         <div>
-          <p>Name: {part.name}</p>
-          <p>Exercise Count: {part.exerciseCount}</p>
-          <p>Group project count: {part.groupProjectCount}</p>
+          <h2>{part.name} {part.exerciseCount}</h2>
+          <p>project exercises {part.groupProjectCount}</p>
         </div>
       )
     case 'background':
       return (
         <div>
-          <p>Name: {part.name}</p>
-          <p>Exercise Count: {part.exerciseCount}</p>
-          <p>Background material: {part.backgroundMaterial}</p>
+          <h2>{part.name} {part.exerciseCount}</h2>
+          <p>{part.backgroundMaterial}</p>
+        </div>
+      )
+
+    case 'special':
+      return (
+        <div>
+          <h2>{part.name} {part.exerciseCount}</h2>
+          <p>Typing the backend</p>
+          <p>required skills: {`${part.requirements[0]}, ${part.requirements[1]}`} </p>
         </div>
       )
 
@@ -104,6 +115,13 @@ const App = () => {
       description: "a hard part",
       kind: "basic",
     },
+    {
+      name: "Backend development",
+      exerciseCount: 21,
+      description: "Typing the backend",
+      requirements: ["nodejs", "jest"],
+      kind: "special"
+    }
   ];
 
   const totalExercises = courseParts.reduce((sum, part) => sum + part.exerciseCount, 0);
