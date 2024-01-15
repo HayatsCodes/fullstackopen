@@ -32,12 +32,14 @@ const App = () => {
   const [commentInput, setCommentInput] = useState('')
   const [errorMsg, setErrorMsg] = useState('')
   const baseUrl: string = ('http://localhost:3000/api/diaries')
+
+
   useEffect(() => {
     axios.get<DiaryEntry[]>(baseUrl)
       .then(res => {
         setEntries(res.data)
       })
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const handleSubmit = async (event: React.SyntheticEvent) => {
@@ -62,24 +64,51 @@ const App = () => {
         }, 5000);
       }
     }
-    
+
   }
   return (
     <div className="app">
       <form onSubmit={handleSubmit} className="form">
         <h2>Add new Entry</h2>
-        {errorMsg && (<p className="error"> {errorMsg} </p>) }
+        {errorMsg && (<p className="error"> {errorMsg} </p>)}
         <label>
-          Date: <input type="date" value={dateInput} onChange={({target}) => setDateInput(target.value)}/>
+          Date: <input type="date" value={dateInput} onChange={({ target }) => setDateInput(target.value)} />
         </label>
         <label>
-          Visibility: <input type="text" value={visibilityInput} onChange={({target}) => setVisibilityInput(target.value)} />
+          Visibility: {' '}
+          <label>
+            great <input type="radio" checked={visibilityInput === 'great'} value='great' onChange={({ target }) => setVisibilityInput(target.value)} />
+          </label>
+          <label>
+            good <input type="radio" checked={visibilityInput === 'good'} value='good' onChange={({ target }) => setVisibilityInput(target.value)} />
+          </label>
+          <label>
+            ok <input type="radio" checked={visibilityInput === 'ok'} value='ok' onChange={({ target }) => setVisibilityInput(target.value)} />
+          </label>
+          <label>
+            poor <input type="radio" checked={visibilityInput === 'poor'} value='poor' onChange={({ target }) => setVisibilityInput(target.value)} />
+          </label>
         </label>
         <label>
-          Weather: <input type="text" value={weatherInput} onChange={({target}) => setWeatherInput(target.value)} />
+          Weather:
+          <label>
+            sunny <input type="radio" checked={weatherInput === 'sunny'} value='sunny' onChange={({ target }) => setWeatherInput(target.value)} />
+          </label>
+          <label>
+            rainy <input type="radio" checked={weatherInput === 'rainy'} value='rainy' onChange={({ target }) => setWeatherInput(target.value)} />
+          </label>
+          <label>
+            cloudy <input type="radio" checked={weatherInput === 'cloudy'} value='cloudy' onChange={({ target }) => setWeatherInput(target.value)} />
+          </label>
+          <label>
+            stormy <input type="radio" checked={weatherInput === 'stormy'} value='stormy' onChange={({ target }) => setWeatherInput(target.value)} />
+          </label>
+          <label>
+            windy <input type="radio" checked={weatherInput === 'windy'} value='windy' onChange={({ target }) => setWeatherInput(target.value)} />
+          </label>
         </label>
         <label>
-          Comment: <input type="text" value={commentInput} onChange={({target}) => setCommentInput(target.value)} />
+          Comment: <input type="text" value={commentInput} onChange={({ target }) => setCommentInput(target.value)} />
         </label>
         <button type="submit">Submit</button>
       </form>
