@@ -19,3 +19,7 @@ li {
     flex-direction: column;
     gap: 1.5rem;
 }
+
+.error {
+    color: red;
+}

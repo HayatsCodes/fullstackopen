@@ -24,14 +24,13 @@ interface DiaryEntry {
   comment: string;
 }
 
-
-
 const App = () => {
   const [entries, setEntries] = useState<DiaryEntry[]>([])
   const [dateInput, setDateInput] = useState('')
   const [weatherInput, setWeatherInput] = useState('')
   const [visibilityInput, setVisibilityInput] = useState('')
   const [commentInput, setCommentInput] = useState('')
+  const [errorMsg, setErrorMsg] = useState('')
   const baseUrl: string = ('http://localhost:3000/api/diaries')
   useEffect(() => {
     axios.get<DiaryEntry[]>(baseUrl)
@@ -43,22 +42,33 @@ const App = () => {
 
   const handleSubmit = async (event: React.SyntheticEvent) => {
     event.preventDefault();
-    const response = await axios.post<DiaryEntry>(baseUrl, {
-      date: dateInput,
-      weather: weatherInput,
-      visibility: visibilityInput,
-      comment: commentInput
-    });
-    setEntries(entries.concat(response.data))
-    setDateInput('')
-    setWeatherInput('')
-    setCommentInput('')
-    setVisibilityInput('')
+    try {
+      const response = await axios.post<DiaryEntry>(baseUrl, {
+        date: dateInput,
+        weather: weatherInput,
+        visibility: visibilityInput,
+        comment: commentInput
+      });
+      setEntries(entries.concat(response.data))
+      setDateInput('')
+      setWeatherInput('')
+      setCommentInput('')
+      setVisibilityInput('')
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        setErrorMsg(error.response?.data)
+        setTimeout(() => {
+          setErrorMsg('')
+        }, 5000);
+      }
+    }
+    
   }
   return (
     <div className="app">
       <form onSubmit={handleSubmit} className="form">
         <h2>Add new Entry</h2>
+        {errorMsg && (<p className="error"> {errorMsg} </p>) }
         <label>
           Date: <input type="date" value={dateInput} onChange={({target}) => setDateInput(target.value)}/>
         </label>
