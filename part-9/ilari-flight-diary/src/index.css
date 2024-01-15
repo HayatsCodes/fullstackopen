@@ -13,3 +13,9 @@
 li {
     list-style: none;
 }
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
